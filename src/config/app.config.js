@@ -11,6 +11,14 @@ export const APP_CONFIG = {
         timeout: 30000,
         text: 'gemini-3-pro-preview',
     },
+
+    // Backend Configuration
+    backend: {
+        enabled: import.meta.env.VITE_USE_BACKEND === 'true',
+        url: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000',
+        healthCheck: '/api/health',
+    },
+
     maxRetries: 3,
     retryDelay: 1000,
 
