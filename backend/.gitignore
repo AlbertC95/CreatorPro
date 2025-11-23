@@ -1,0 +1,7 @@
+# Backend - Creator Pro API
+
+node_modules/
+.env
+.env.local
+*.log
+dist/
