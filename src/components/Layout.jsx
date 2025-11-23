@@ -5,11 +5,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Key } from 'lucide-react';
+import { Sparkles, Key, History } from 'lucide-react';
 import { Input } from './ui/Input';
 import { APP_CONFIG } from '../config/app.config';
 
-export const Layout = ({ children, apiKey, setApiKey, showSettings, setShowSettings }) => {
+export const Layout = ({ children, apiKey, setApiKey, showSettings, setShowSettings, onHistoryClick }) => {
     return (
         <div className="min-h-screen bg-bg-primary text-text-primary font-sans selection:bg-brand-primary/30 relative overflow-x-hidden">
             {/* Background Gradients */}
@@ -32,6 +32,13 @@ export const Layout = ({ children, apiKey, setApiKey, showSettings, setShowSetti
                         </h1>
                     </div>
                     <div className="flex items-center gap-4 text-xs font-mono text-text-tertiary">
+                        <button
+                            onClick={onHistoryClick}
+                            className="p-2 rounded-full transition-all duration-300 bg-bg-tertiary text-text-secondary hover:bg-bg-secondary hover:text-text-primary hover:shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+                            title="Historial"
+                        >
+                            <History size={16} />
+                        </button>
                         <button
                             onClick={() => setShowSettings(!showSettings)}
                             className={`p-2 rounded-full transition-all duration-300 ${!apiKey ? 'bg-brand-primary text-black animate-pulse shadow-[0_0_15px_rgba(245,158,11,0.5)]' : 'bg-bg-tertiary text-text-secondary hover:bg-bg-secondary hover:text-text-primary'}`}

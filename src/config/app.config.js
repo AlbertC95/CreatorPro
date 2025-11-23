@@ -19,7 +19,10 @@ export const APP_CONFIG = {
     // Backend Configuration (nuevo)
     backend: {
         enabled: import.meta.env.VITE_USE_BACKEND === 'true' || false, // Por defecto false
-        url: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000',
+        url: import.meta.env.VITE_BACKEND_URL ||
+            (import.meta.env.PROD
+                ? 'https://creator-pro-backend.onrender.com'
+                : 'http://localhost:3000'),
     },
 
     // Gemini Configuration

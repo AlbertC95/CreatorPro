@@ -4,6 +4,7 @@ import { ImageUploader } from './components/ImageUploader';
 import { TemplateSelector } from './components/TemplateSelector';
 import { ControlPanel } from './components/ControlPanel';
 import { ResultGrid } from './components/ResultGrid';
+import { HistoryPanel } from './components/HistoryPanel';
 import { useGemini } from './hooks/useGemini';
 import { useHistory } from './hooks/useHistory';
 import { TEMPLATES } from './services/prompts';
@@ -14,6 +15,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState('professionalPhotoshoot');
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   // Estados de Parámetros
   const [styleParams, setStyleParams] = useState({
@@ -116,49 +118,63 @@ function App() {
   };
 
   return (
-    <Layout apiKey={apiKey} setApiKey={setApiKey} showSettings={showSettings} setShowSettings={setShowSettings}>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* LEFT PANEL: CONTROLS */}
-        <div className="lg:col-span-4 space-y-8 max-h-[calc(100vh-6rem)] overflow-y-auto pr-4 pl-1 custom-scrollbar">
-          <ImageUploader
-            uploadedImage={uploadedImage}
-            setUploadedImage={setUploadedImage}
-            setError={(msg) => console.error(msg)}
-          />
+    <>
+      <Layout
+        apiKey={apiKey}
+        setApiKey={setApiKey}
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+        onHistoryClick={() => setIsHistoryOpen(true)}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* LEFT PANEL: CONTROLS */}
+          <div className="lg:col-span-4 space-y-8 max-h-[calc(100vh-6rem)] overflow-y-auto pr-4 pl-1 custom-scrollbar">
+            <ImageUploader
+              uploadedImage={uploadedImage}
+              setUploadedImage={setUploadedImage}
+              setError={(msg) => console.error(msg)}
+            />
 
-          <TemplateSelector
-            selectedTemplate={selectedTemplate}
-            setSelectedTemplate={setSelectedTemplate}
-          />
+            <TemplateSelector
+              selectedTemplate={selectedTemplate}
+              setSelectedTemplate={setSelectedTemplate}
+            />
 
-          <ControlPanel
-            selectedTemplate={selectedTemplate}
-            styleParams={styleParams} setStyleParams={setStyleParams}
-            customParams={customParams} setCustomParams={setCustomParams}
-            animeCustoms={animeCustoms} setAnimeCustoms={setAnimeCustoms}
-            travelOptions={travelOptions} setTravelOptions={setTravelOptions}
-            selectedLandmarks={selectedLandmarks} setSelectedLandmarks={setSelectedLandmarks}
-            freePrompt={freePrompt} setFreePrompt={setFreePrompt}
-            handleVisualMuse={handleVisualMuse}
-            handleEnhanceFreePrompt={handleEnhanceFreePrompt}
-            isEnhancing={isEnhancing}
-            handleGenerate={handleGenerate}
-            isGenerating={isGenerating}
-            uploadedImage={uploadedImage}
-            error={error}
-          />
+            <ControlPanel
+              selectedTemplate={selectedTemplate}
+              styleParams={styleParams} setStyleParams={setStyleParams}
+              customParams={customParams} setCustomParams={setCustomParams}
+              animeCustoms={animeCustoms} setAnimeCustoms={setAnimeCustoms}
+              travelOptions={travelOptions} setTravelOptions={setTravelOptions}
+              selectedLandmarks={selectedLandmarks} setSelectedLandmarks={setSelectedLandmarks}
+              freePrompt={freePrompt} setFreePrompt={setFreePrompt}
+              handleVisualMuse={handleVisualMuse}
+              handleEnhanceFreePrompt={handleEnhanceFreePrompt}
+              isEnhancing={isEnhancing}
+              handleGenerate={handleGenerate}
+              isGenerating={isGenerating}
+              uploadedImage={uploadedImage}
+              error={error}
+            />
+          </div>
+
+          {/* RIGHT PANEL: RESULTS */}
+          <div className="lg:col-span-8">
+            <ResultGrid
+              generatedImages={generatedImages}
+              onDownload={handleDownload}
+              apiKey={apiKey}
+            />
+          </div>
         </div>
+      </Layout>
 
-        {/* RIGHT PANEL: RESULTS */}
-        <div className="lg:col-span-8">
-          <ResultGrid
-            generatedImages={generatedImages}
-            onDownload={handleDownload}
-            apiKey={apiKey}
-          />
-        </div>
-      </div>
-    </Layout>
+      {/* HISTORY PANEL */}
+      <HistoryPanel
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+      />
+    </>
   );
 }
 
