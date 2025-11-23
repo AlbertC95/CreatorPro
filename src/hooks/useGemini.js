@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { generateImageReal, generateTextReal, toBase64 } from '../services/gemini';
+import { generateImageReal, generateTextReal, toBase64 } from '../services/geminiWrapper';
 import { getRealInstruction, TEMPLATES, DESTINATIONS_DATA } from '../services/prompts';
 
 export const useGemini = (apiKey) => {

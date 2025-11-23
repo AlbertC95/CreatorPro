@@ -16,6 +16,12 @@ export const APP_CONFIG = {
         maxRetries: 3,
     },
 
+    // Backend Configuration (nuevo)
+    backend: {
+        enabled: import.meta.env.VITE_USE_BACKEND === 'true',
+        url: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000',
+    },
+
     // Gemini Configuration
     gemini: {
         models: {
