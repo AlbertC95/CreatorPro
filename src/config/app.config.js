@@ -13,27 +13,11 @@ export const APP_CONFIG = {
     api: {
         baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000',
         timeout: 30000,
-        maxRetries: 3,
+        text: 'gemini-3-pro-preview',
     },
-
-    // Backend Configuration (nuevo)
-    backend: {
-        enabled: import.meta.env.VITE_USE_BACKEND === 'true' || false, // Por defecto false
-        url: import.meta.env.VITE_BACKEND_URL ||
-            (import.meta.env.PROD
-                ? 'https://creator-pro-backend.onrender.com'
-                : 'http://localhost:3000'),
-    },
-
-    // Gemini Configuration
-    gemini: {
-        models: {
-            image: 'gemini-3-pro-image-preview',
-            text: 'gemini-3-pro-preview',
-        },
-        maxRetries: 3,
-        retryDelay: 1000,
-    },
+    maxRetries: 3,
+    retryDelay: 1000,
+},
 
     // Planes y límites
     plans: {
@@ -114,16 +98,16 @@ export const APP_CONFIG = {
     // Límites de archivos
     upload: {
         maxFileSize: 10 * 1024 * 1024, // 10MB
-        acceptedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-        maxBatchSize: 50,
+            acceptedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+                maxBatchSize: 50,
     },
 
-    // URLs
-    urls: {
-        homepage: 'https://creatorpro.app',
+// URLs
+urls: {
+    homepage: 'https://creatorpro.app',
         docs: 'https://docs.creatorpro.app',
-        support: 'mailto:support@creatorpro.app',
-        github: 'https://github.com/yourusername/creator-pro',
+            support: 'mailto:support@creatorpro.app',
+                github: 'https://github.com/yourusername/creator-pro',
     },
 };
 
