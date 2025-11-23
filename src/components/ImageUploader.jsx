@@ -1,56 +1,96 @@
-import React, { useRef } from 'react';
-import { Upload, Image as ImageIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { toBase64 } from '../services/gemini';
+/**
+ * ImageUploader Component - Versión Profesional
+ * Migrado al nuevo sistema de diseño sin hardcoding
+ */
+
+import React, { useCallback } from 'react';
+import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Card } from './ui/Card';
+import { Button } from './ui/Button';
+import { cn } from '../utils/cn';
+import { APP_CONFIG } from '../config/app.config';
+
+const { maxFileSize, acceptedTypes } = APP_CONFIG.upload;
 
 export const ImageUploader = ({ uploadedImage, setUploadedImage, setError }) => {
-    const fileInputRef = useRef(null);
+    const handleFileChange = useCallback((e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
 
-    const handleUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            try {
-                const base64 = await toBase64(file);
-                setUploadedImage(base64);
-                setError(null);
-            } catch (err) {
-                setError("Error al subir la imagen.");
-            }
+        // Validaciones usando configuración centralizada
+        if (!acceptedTypes.includes(file.type)) {
+            setError('Formato no soportado. Usa JPG, PNG o WebP.');
+            return;
         }
-    };
+
+        if (file.size > maxFileSize) {
+            const maxSizeMB = maxFileSize / (1024 * 1024);
+            setError(`Imagen muy grande. Máximo ${maxSizeMB}MB.`);
+            return;
+        }
+
+        // Convertir a base64
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            setUploadedImage(event.target.result);
+            setError(null);
+        };
+        reader.onerror = () => {
+            setError('Error al cargar la imagen.');
+        };
+        reader.readAsDataURL(file);
+    }, [setUploadedImage, setError]);
+
+    const handleRemove = useCallback(() => {
+        setUploadedImage(null);
+    }, [setUploadedImage]);
 
     return (
-        <section>
-            <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-gray-800 flex items-center justify-center text-xs text-gray-400 border border-gray-700">1</span>
-                Sujeto
+        <Card padding="md" className="relative">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-text-primary">
+                <ImageIcon className="w-5 h-5 text-brand-primary" />
+                Tu Foto
             </h3>
-            <motion.div
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={() => fileInputRef.current?.click()}
-                className={`relative group w-full aspect-[4/3] rounded-2xl border-2 border-dashed transition-all cursor-pointer overflow-hidden flex flex-col items-center justify-center ${uploadedImage ? 'border-yellow-500/50 bg-gray-900' : 'border-gray-700 hover:border-yellow-500/50 hover:bg-gray-900/80 bg-gray-900/40'}`}
-            >
-                {uploadedImage ? (
-                    <>
-                        <img src={uploadedImage} alt="Source" className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity" />
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold text-white flex items-center gap-2 border border-white/10">
-                                <Upload size={14} /> Cambiar Foto
-                            </div>
-                        </div>
-                    </>
-                ) : (
-                    <div className="text-center text-gray-500 group-hover:text-gray-300 transition-colors p-6">
-                        <div className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 border border-gray-700 group-hover:border-yellow-500/30">
-                            <ImageIcon className="w-8 h-8 text-gray-600 group-hover:text-yellow-500 transition-colors" />
-                        </div>
-                        <p className="font-medium text-sm">Sube una foto clara</p>
-                        <p className="text-xs mt-1 text-gray-600">JPG o PNG. Rostro visible.</p>
-                    </div>
-                )}
-            </motion.div>
-            <input type="file" ref={fileInputRef} onChange={handleUpload} className="hidden" accept="image/*" />
-        </section>
+
+            {!uploadedImage ? (
+                <label className={cn(
+                    'flex flex-col items-center justify-center',
+                    'border-2 border-dashed border-border-primary rounded-lg',
+                    'p-12 cursor-pointer transition-all duration-200',
+                    'hover:border-brand-primary hover:bg-bg-tertiary/50'
+                )}>
+                    <Upload className="w-12 h-12 text-text-tertiary mb-4" />
+                    <p className="text-text-secondary text-sm mb-2">
+                        Click para subir o arrastra aquí
+                    </p>
+                    <p className="text-text-tertiary text-xs">
+                        JPG, PNG o WebP (máx. {maxFileSize / (1024 * 1024)}MB)
+                    </p>
+                    <input
+                        type="file"
+                        accept={acceptedTypes.join(',')}
+                        onChange={handleFileChange}
+                        className="hidden"
+                    />
+                </label>
+            ) : (
+                <div className="relative group">
+                    <img
+                        src={uploadedImage}
+                        alt="Imagen subida"
+                        className="w-full h-64 object-cover rounded-lg"
+                    />
+                    <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={handleRemove}
+                        icon={X}
+                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        Eliminar
+                    </Button>
+                </div>
+            )}
+        </Card>
     );
 };
