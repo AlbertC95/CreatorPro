@@ -15,7 +15,7 @@ export const APP_CONFIG = {
     // Backend Configuration
     backend: {
         enabled: import.meta.env.VITE_USE_BACKEND === 'true',
-        url: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000',
+        url: import.meta.env.VITE_BACKEND_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000'),
         healthCheck: '/api/health',
     },
 

@@ -48,12 +48,14 @@ app.get('/', (req, res) => {
 // Error handler (debe ser el último middleware)
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`\n🚀 Creator Pro API running on port ${PORT}`);
-    console.log(`📍 Environment: ${process.env.NODE_ENV}`);
-    console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL}`);
-    console.log(`✅ Server ready!\n`);
-});
+// Start server only if run directly
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`\n🚀 Creator Pro API running on port ${PORT}`);
+        console.log(`📍 Environment: ${process.env.NODE_ENV}`);
+        console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL}`);
+        console.log(`✅ Server ready!\n`);
+    });
+}
 
 module.exports = app;
