@@ -41,7 +41,16 @@ export const useGemini = (apiKey) => {
 
                 try {
                     const imageUrl = await generateImageReal(payload, apiKey);
-                    setGeneratedImages(prev => [...prev, { id: Math.random().toString(36), promptId: prompt.id, url: imageUrl }]);
+                    const imageData = {
+                        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                        promptId: prompt.id,
+                        url: imageUrl,
+                        template: templateId,
+                        templateName: TEMPLATES[templateId]?.name || 'Custom',
+                        fullPrompt: instruction,
+                        timestamp: Date.now(),
+                    };
+                    setGeneratedImages(prev => [...prev, imageData]);
                 } catch (err) {
                     console.error(`Error generating ${prompt.id}:`, err);
                 }

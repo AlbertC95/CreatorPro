@@ -5,6 +5,7 @@ import { TemplateSelector } from './components/TemplateSelector';
 import { ControlPanel } from './components/ControlPanel';
 import { ResultGrid } from './components/ResultGrid';
 import { useGemini } from './hooks/useGemini';
+import { useHistory } from './hooks/useHistory';
 import { TEMPLATES } from './services/prompts';
 
 function App() {
@@ -67,6 +68,21 @@ function App() {
     isGenerating, isEnhancing, error, generatedImages,
     generateSet, enhancePrompt, getVisualMuse
   } = useGemini(apiKey);
+
+  // Hook de Historial
+  const { addToHistory } = useHistory();
+
+  // Guardar imágenes en historial cuando se generan
+  React.useEffect(() => {
+    if (generatedImages.length > 0) {
+      generatedImages.forEach(img => {
+        // Solo agregar si tiene timestamp reciente (últimos 5 segundos)
+        if (img.timestamp && Date.now() - img.timestamp < 5000) {
+          addToHistory(img);
+        }
+      });
+    }
+  }, [generatedImages, addToHistory]);
 
   // Handlers
   const handleGenerate = () => {
