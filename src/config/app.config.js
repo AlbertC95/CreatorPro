@@ -1,8 +1,4 @@
-/**
- * Configuración centralizada de la aplicación
- * Sin hardcoding - todos los valores configurables en un solo lugar
- */
-
+/** Configuración centralizada de la aplicación */
 export const APP_CONFIG = {
     // Información de la app
     name: 'Creator Pro',
@@ -17,7 +13,6 @@ export const APP_CONFIG = {
     },
     maxRetries: 3,
     retryDelay: 1000,
-},
 
     // Planes y límites
     plans: {
@@ -57,7 +52,7 @@ export const APP_CONFIG = {
             limits: {
                 generationsPerMonth: 100,
                 maxResolution: 2048,
-                historyLimit: -1, // Unlimited
+                historyLimit: -1,
                 templatesAccess: 'all',
             },
         },
@@ -65,7 +60,7 @@ export const APP_CONFIG = {
             id: 'studio',
             name: 'Studio',
             price: 29.99,
-            credits: -1, // Unlimited
+            credits: -1,
             features: [
                 'Generaciones ilimitadas',
                 'Resolución 4096x4096 (8K)',
@@ -87,27 +82,27 @@ export const APP_CONFIG = {
 
     // Feature flags
     features: {
-        auth: false,              // Activar cuando Supabase esté listo
-        payments: false,          // Activar cuando Stripe esté listo
-        videoGeneration: false,   // Activar cuando Runway esté integrado
-        marketplace: false,       // Activar cuando esté desarrollado
-        collaboration: false,     // Activar cuando WebSockets estén listos
-        batchProcessing: false,   // Activar cuando backend esté listo
+        auth: false,
+        payments: false,
+        videoGeneration: false,
+        marketplace: false,
+        collaboration: false,
+        batchProcessing: false,
     },
 
     // Límites de archivos
     upload: {
-        maxFileSize: 10 * 1024 * 1024, // 10MB
-            acceptedTypes: ['image/jpeg', 'image/png', 'image/webp'],
-                maxBatchSize: 50,
+        maxFileSize: 10 * 1024 * 1024,
+        acceptedTypes: ['image/jpeg', 'image/png', 'image/webp'],
+        maxBatchSize: 50,
     },
 
-// URLs
-urls: {
-    homepage: 'https://creatorpro.app',
+    // URLs
+    urls: {
+        homepage: 'https://creatorpro.app',
         docs: 'https://docs.creatorpro.app',
-            support: 'mailto:support@creatorpro.app',
-                github: 'https://github.com/yourusername/creator-pro',
+        support: 'mailto:support@creatorpro.app',
+        github: 'https://github.com/yourusername/creator-pro',
     },
 };
 
