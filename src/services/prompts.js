@@ -74,17 +74,17 @@ export const TEMPLATES = {
             framing: ['Default', 'Headshot (85mm)', 'Waist Up (50mm)', 'Full Body (35mm)', 'Environmental (24mm)', 'Extreme Close-up', 'Low Angle'],
             wardrobe: ['Default', 'Casual Chic', 'Business Formal', 'Old Money Aesthetic', 'Streetwear', 'Techwear', 'Avant-Garde', 'Minimalist', 'Bohemian', 'Gothic', 'Athletic'],
             film: ['Default', 'Digital Clean', 'Kodak Portra 400', 'B&W Tri-X 400', 'Fujifilm Velvia', 'Cinestill 800T', 'Polaroid Vintage'],
-            pose: ['Default', 'Standing Power Pose', 'Arms Crossed', 'Hands in Pockets', 'Leaning on Desk', 'Walking Confident', 'Sitting Executive', 'Profile Thoughtful', 'Dynamic Action', 'High Fashion'],
+            pose: ['Default', 'Standing Power Pose', 'Arms Crossed', 'Hands in Pockets', 'Leaning on Wall', 'Walking Confident', 'Sitting on Cube (Full Body)', 'Profile Thoughtful', 'Dynamic Action', 'High Fashion'],
             expression: ['Default', 'Neutral Serious', 'Soft Smile', 'Confident Smirk', 'Intense Gaze', 'Relaxed', 'Laughing (Natural)', 'Dreamy', 'Focused'],
             background: ['Default', 'Solid White', 'Solid Light Grey', 'Studio Dark Grey', 'Black Void', 'Modern Office Blur', 'Luxury Interior', 'City Bokeh', 'Abstract Texture']
         },
         prompts: [
-            { id: 'LinkedIn Headshot', base: 'FRAMING: Close-up Headshot. Professional business portrait, confident but natural expression. Slight smile or neutral. Business attire. Clean background.' },
-            { id: 'Power Full Body', base: 'FRAMING: Full Body Shot. Standing confidently, strong posture (Power Pose). Fashion or Business look. Showing full outfit. High-end editorial vibe.' },
-            { id: 'Cinematic Close-up', base: 'FRAMING: Extreme Close-up. Emotional depth, dramatic shadows. Serious or contemplative expression. NO smiling. Movie poster quality.' },
-            { id: 'Executive Sitting', base: 'FRAMING: Medium Shot, Sitting. Sitting comfortably in a high-end chair or armchair. Relaxed but authoritative posture. Executive vibe.' },
-            { id: 'Thoughtful Profile', base: 'FRAMING: Side Profile. Looking away from camera. Strong jawline definition. Artistic lighting. Pensive mood.' },
-            { id: 'Modern Business', base: 'FRAMING: Waist Up. Arms crossed or adjusting cuff. Confident professional look. Modern business context.' }
+            { id: 'LinkedIn Headshot', base: 'FRAMING: Close-up Headshot (Shoulders up). Professional business portrait, confident but natural expression. Slight smile or neutral. Business attire. Clean background.' },
+            { id: 'Power Full Body', base: 'FRAMING: Wide Full Body Shot. Standing confidently, strong posture (Power Pose). Camera zoomed out to show shoes and entire outfit. High-end editorial vibe.' },
+            { id: 'Fashion 3/4 Shot', base: 'FRAMING: American Shot (Knees up). Stylish pose, hands in pockets or adjusting jacket. Dynamic angle. Fashion magazine style.' },
+            { id: 'Sitting Full Body', base: 'FRAMING: Wide Full Body Shot, Sitting. Subject is sitting on a white cube or stool. Legs crossed or relaxed. SHOW ENTIRE BODY including shoes. Hands resting on knees or chin.' },
+            { id: 'Walking Motion', base: 'FRAMING: Full Body, Walking towards camera. Dynamic movement, coat flowing. Street style or runway vibe. Camera tracking shot.' },
+            { id: 'Modern Portrait', base: 'FRAMING: Waist Up (Medium Shot). Arms crossed or leaning forward. Intense connection with camera. Modern professional look.' }
         ]
     },
     avatarStudio: {
@@ -228,7 +228,7 @@ export const getRealInstruction = (template, prompt, options) => {
 
     switch (template) {
         case 'professionalPhotoshoot':
-            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. ${p_pose}. ${p_expr}. ${p_bg}. Ensure high-end magazine quality. Skin must look natural and clear. **NEGATIVE PROMPT:** Do NOT show studio lighting equipment, softboxes, umbrellas, or stands in the frame. Clean background.`;
+            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. ${p_pose}. ${p_expr}. ${p_bg}. Ensure high-end magazine quality. Skin must look natural and clear. **CRITICAL:** DO NOT CROP THE HEAD. Leave ample headroom. **NEGATIVE PROMPT:** Do NOT show studio lighting equipment, softboxes, umbrellas, or stands in the frame. Clean background.`;
             break;
 
         case 'avatarStudio':
