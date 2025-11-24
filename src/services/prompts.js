@@ -48,24 +48,24 @@ export const TEMPLATES = {
         id: 'professionalPhotoshoot', name: 'Studio Pro', desc: 'Editorial, LinkedIn, Headshots.',
         styles: ['Estudio Minimalista', 'Urbano / Street', 'Bohemio / Nature', 'Editorial Alta Costura', 'Cyberpunk Neon', 'Vintage 90s', 'Old Money Luxury', 'Cinematográfico Noir', 'Surrealista / Dreamy', 'Business Corporate', 'Fitness / Sport', 'Gótico / Dark'],
         prompts: [
-            { id: 'Primer Plano', base: 'Extreme close-up portrait, focus on eyes.' },
-            { id: 'Corporativo', base: 'Professional headshot, business attire, neutral background.' },
-            { id: 'Cuerpo Entero', base: 'Full body fashion pose.' },
-            { id: 'Cándido', base: 'Caught in motion, natural laugh.' },
-            { id: 'Blanco y Negro', base: 'High contrast B&W classic portrait.' },
-            { id: 'Marca Personal', base: 'Working on a laptop in a modern cafe, lifestyle shot.' }
+            { id: 'Primer Plano', base: 'Extreme close-up portrait, focus on eyes. Shot on 85mm lens, f/1.8.' },
+            { id: 'Corporativo', base: 'Professional headshot, business attire, neutral background. Soft lighting.' },
+            { id: 'Cuerpo Entero', base: 'Full body fashion pose. Wide angle lens.' },
+            { id: 'Cándido', base: 'Caught in motion, subtle candid smile, looking away. Natural moment.' },
+            { id: 'Blanco y Negro', base: 'High contrast B&W classic portrait. Dramatic lighting.' },
+            { id: 'Marca Personal', base: 'Working on a laptop in a modern cafe, lifestyle shot. Depth of field.' }
         ]
     },
     avatarStudio: {
         id: 'avatarStudio', name: 'Avatar 3D', desc: 'CGI, Videojuegos, Esculturas.',
         styles: ['CGI Hiperrealista', 'Videojuego AAA (Unreal 5)', 'Cyber-Humano (Sci-Fi)', 'Estilo Pixar / Disney', 'Escultura de Mármol', 'Claymation (Arcilla)', 'Dibujo a Lápiz (Sketch)', 'Pintura al Óleo', 'Low Poly Art'],
         prompts: [
-            { id: 'ID Biométrica', base: 'Front facing neutral, perfect lighting.' },
-            { id: 'Héroe RPG', base: 'Dynamic combat pose, magical aura.' },
-            { id: 'Perfil Cibernético', base: 'Side profile view, neon circuitry on skin.' },
-            { id: 'Estatua Clásica', base: 'Marble bust in a museum.' },
-            { id: 'Primer Plano', base: 'Extreme close up on face textures.' },
-            { id: 'Cuerpo Entero', base: 'Full body character design sheet.' }
+            { id: 'ID Biométrica', base: 'Front facing neutral, perfect lighting. High skin texture detail.' },
+            { id: 'Héroe RPG', base: 'Dynamic combat pose, magical aura. Fantasy armor.' },
+            { id: 'Perfil Cibernético', base: 'Side profile view, neon circuitry on skin. Cyberpunk aesthetics.' },
+            { id: 'Estatua Clásica', base: 'Marble bust in a museum. Museum lighting.' },
+            { id: 'Primer Plano', base: 'Extreme close up on face textures. Pores and imperfections visible.' },
+            { id: 'Cuerpo Entero', base: 'Full body character design sheet. Neutral background.' }
         ]
     },
     anime: {
@@ -157,16 +157,18 @@ export const getRealInstruction = (template, prompt, options) => {
     const p_time = time ? `TIME OF DAY: ${time}` : '';
     const p_color = color ? `COLOR GRADING: ${color}` : '';
 
-    const systemContext = `**SYSTEM:** Gemini 3 Pro Image. **MODE:** Hyper-Realism (unless specified otherwise). **ID PRESERVATION:** Strict >99%.`;
+    // SYSTEM CONTEXT MEJORADO: Identidad estricta
+    const systemContext = `**SYSTEM:** Gemini 3 Pro Image. **MODE:** Hyper-Realism (unless specified otherwise). **CRITICAL:** PRESERVE SUBJECT IDENTITY. Maintain exact facial structure, eye shape, nose, and key features from input image. Do NOT beautify or alter ethnicity/age. Avoid exaggerated expressions, plastic skin, or uncanny valley effects.`;
+
     let taskInstruction = "";
 
     switch (template) {
         case 'professionalPhotoshoot':
-            taskInstruction = `**TASK:** Professional Photoshoot. **THEME:** ${styleParams.style}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}. Ensure high-end magazine quality.`;
+            taskInstruction = `**TASK:** Professional Photoshoot. **THEME:** ${styleParams.style}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}. Ensure high-end magazine quality. Skin texture must be realistic (pores, imperfections).`;
             break;
 
         case 'avatarStudio':
-            taskInstruction = `**TASK:** Digital Avatar Creation. **RENDER STYLE:** ${styleParams.avatarStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_pose}. ${p_expr}. Focus on perfect CGI/3D topology and textures.`;
+            taskInstruction = `**TASK:** Digital Avatar Creation. **RENDER STYLE:** ${styleParams.avatarStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_pose}. ${p_expr}. Focus on perfect CGI/3D topology and textures. Even in stylized modes, keep the subject's key facial proportions.`;
             break;
 
         case 'anime':
@@ -207,7 +209,7 @@ export const getRealInstruction = (template, prompt, options) => {
             break;
 
         case 'timeTravel':
-            taskInstruction = `**TASK:** Historical Reenactment. **ERA/THEME:** ${styleParams.era}. **SCENE:** ${prompt.base}. Apply period-accurate film grain, camera imperfections, and vintage color grading. ${wardrobe} must match the era perfectly.`;
+            taskInstruction = `**TASK:** Historical Reenactment. **ERA/THEME:** ${styleParams.era}. **SCENE:** ${prompt.base}. Apply period-accurate film grain, camera imperfections, and vintage color grading. ${wardrobe} must match the era perfectly. Subject MUST wear period-accurate clothing. NO modern clothes.`;
             break;
 
         case 'travelPhotoshoot':
