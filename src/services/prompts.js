@@ -34,18 +34,18 @@ export const DESTINATIONS_DATA = {
 // Define la dirección de arte automática cuando el usuario deja opciones en 'Default'
 const STYLE_PRESETS = {
     professionalPhotoshoot: {
-        'Estudio Minimalista': { lighting: 'Softbox Studio', framing: 'Waist Up (50mm)', wardrobe: 'Minimalist Solid Colors', film: 'Digital Clean', pose: 'Standing Straight', expression: 'Neutral Serious' },
-        'Cinematográfico Noir': { lighting: 'Rembrandt (High Contrast)', framing: 'Close-up Intense', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400', pose: 'Profile', expression: 'Contemplative' },
-        'Old Money Luxury': { lighting: 'Golden Hour Natural', framing: 'Waist Up (50mm)', wardrobe: 'Old Money Aesthetic (Polo/Sweater)', film: 'Kodak Portra 400', pose: 'Hands in Pockets', expression: 'Confident Smirk' },
-        'Cyberpunk Neon': { lighting: 'Neon Split (Blue/Red)', framing: 'Low Angle', wardrobe: 'Techwear / Futuristic', film: 'Digital Sharp', pose: 'Dynamic', expression: 'Intense Gaze' },
-        'Editorial Alta Costura': { lighting: 'Butterfly Lighting', framing: 'Full Body Fashion', wardrobe: 'Avant-Garde Fashion', film: 'Digital Clean', pose: 'High Fashion', expression: 'Model Pout' },
-        'Urbano / Street': { lighting: 'Natural Overcast', framing: 'Environmental (35mm)', wardrobe: 'Streetwear (Hoodie/Layered)', film: 'Fujifilm Velvia', pose: 'Walking', expression: 'Relaxed' },
-        'Bohemio / Nature': { lighting: 'Natural Sunlight', framing: 'Medium Shot', wardrobe: 'Linen & Earth Tones', film: 'Kodak Gold', pose: 'Sitting Relaxed', expression: 'Peaceful' },
-        'Vintage 90s': { lighting: 'Direct Flash', framing: 'Medium Shot', wardrobe: '90s Grunge/Denim', film: 'Disposable Camera', pose: 'Casual Lean', expression: 'Candid' },
-        'Business Corporate': { lighting: 'Studio Multi-Point', framing: 'Headshot', wardrobe: 'Business Suit', film: 'Digital Clean', pose: 'Arms Crossed', expression: 'Confident Smile' },
-        'Fitness / Sport': { lighting: 'Hard Rim Light', framing: '3/4 Body', wardrobe: 'Athletic Gear', film: 'High Contrast', pose: 'Action/Stretch', expression: 'Focused' },
-        'Gótico / Dark': { lighting: 'Low Key', framing: 'Close-up', wardrobe: 'Gothic Black', film: 'Desaturated', pose: 'Mysterious', expression: 'Serious' },
-        'Surrealista / Dreamy': { lighting: 'Soft Haze', framing: 'Wide', wardrobe: 'Flowing Fabric', film: 'Pastel', pose: 'Floating/Dancing', expression: 'Dreamy' }
+        'Estudio Minimalista': { lighting: 'Bright Softbox Studio', wardrobe: 'Minimalist Solid Colors', film: 'Digital Clean' }, // Removed framing/pose to allow variety
+        'Cinematográfico Noir': { lighting: 'Rembrandt (High Contrast)', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400' },
+        'Old Money Luxury': { lighting: 'Golden Hour Natural', wardrobe: 'Old Money Aesthetic (Polo/Sweater)', film: 'Kodak Portra 400' },
+        'Cyberpunk Neon': { lighting: 'Neon Split (Blue/Red)', wardrobe: 'Techwear / Futuristic', film: 'Digital Sharp' },
+        'Editorial Alta Costura': { lighting: 'Butterfly Lighting', wardrobe: 'Avant-Garde Fashion', film: 'Digital Clean' },
+        'Urbano / Street': { lighting: 'Natural Overcast', wardrobe: 'Streetwear (Hoodie/Layered)', film: 'Fujifilm Velvia' },
+        'Bohemio / Nature': { lighting: 'Natural Sunlight', wardrobe: 'Linen & Earth Tones', film: 'Kodak Gold' },
+        'Vintage 90s': { lighting: 'Direct Flash', wardrobe: '90s Grunge/Denim', film: 'Disposable Camera' },
+        'Business Corporate': { lighting: 'Studio Multi-Point', wardrobe: 'Business Suit', film: 'Digital Clean' },
+        'Fitness / Sport': { lighting: 'Hard Rim Light', wardrobe: 'Athletic Gear', film: 'High Contrast' },
+        'Gótico / Dark': { lighting: 'Low Key', wardrobe: 'Gothic Black', film: 'Desaturated' },
+        'Surrealista / Dreamy': { lighting: 'Soft Haze', wardrobe: 'Flowing Fabric', film: 'Pastel' }
     },
     anime: {
         'One Piece Style': { lighting: 'Dramatic Shading', framing: 'Dynamic Angle', effect: 'Speed Lines' },
@@ -78,12 +78,12 @@ export const TEMPLATES = {
             expression: ['Default', 'Neutral Serious', 'Soft Smile', 'Confident Smirk', 'Intense Gaze', 'Relaxed', 'Laughing (Natural)', 'Dreamy', 'Focused']
         },
         prompts: [
-            { id: 'LinkedIn Headshot', base: 'Professional business portrait, confident but natural expression. Slight smile or neutral. Business attire. Neutral studio background.' },
-            { id: 'Editorial Fashion', base: 'High-fashion pose, looking away or intense gaze. Dramatic lighting. Magazine cover quality.' },
-            { id: 'Cinematic Portrait', base: 'Close-up, emotional depth, dramatic shadows. Serious or contemplative expression. NO smiling.' },
-            { id: 'Casual Lifestyle', base: 'Relaxed pose in a modern setting. Candid moment, natural body language.' },
-            { id: 'Outdoor Business', base: 'Walking in a city business district. Dynamic movement. Natural lighting. Professional look.' },
-            { id: 'Creative Studio', base: 'Artistic lighting setup, unique angle. Creative and expressive portrait.' }
+            { id: 'LinkedIn Headshot', base: 'FRAMING: Close-up Headshot. Professional business portrait, confident but natural expression. Slight smile or neutral. Business attire. Neutral studio background.' },
+            { id: 'Full Body Studio', base: 'FRAMING: Full Body Shot. Standing confidently, fashion pose. Clean studio background. Showing full outfit.' },
+            { id: 'Cinematic Portrait', base: 'FRAMING: Extreme Close-up. Emotional depth, dramatic shadows. Serious or contemplative expression. NO smiling.' },
+            { id: 'Sitting Pose', base: 'FRAMING: Full Body, Sitting. Relaxed pose on a chair or stool. Natural body language. Studio setting.' },
+            { id: 'Dynamic Profile', base: 'FRAMING: Side Profile. Looking away from camera. Strong jawline definition. Artistic lighting.' },
+            { id: 'Waist Up Creative', base: 'FRAMING: Waist Up (Medium Shot). Arms crossed or hands interacting with props. Creative and expressive portrait.' }
         ]
     },
     avatarStudio: {
