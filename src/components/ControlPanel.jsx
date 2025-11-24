@@ -32,7 +32,8 @@ const OPTION_LABELS = {
     material: 'Material',
     environment: 'Entorno',
     pose: 'Pose / Postura',
-    expression: 'Expresión Facial'
+    expression: 'Expresión Facial',
+    background: 'Fondo / Escenario'
 };
 
 export const ControlPanel = ({
