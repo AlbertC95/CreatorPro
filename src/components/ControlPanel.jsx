@@ -30,7 +30,9 @@ const OPTION_LABELS = {
     film: 'Tipo de Película',
     effect: 'Efectos Especiales',
     material: 'Material',
-    environment: 'Entorno'
+    environment: 'Entorno',
+    pose: 'Pose / Postura',
+    expression: 'Expresión Facial'
 };
 
 export const ControlPanel = ({

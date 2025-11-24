@@ -34,12 +34,18 @@ export const DESTINATIONS_DATA = {
 // Define la dirección de arte automática cuando el usuario deja opciones en 'Default'
 const STYLE_PRESETS = {
     professionalPhotoshoot: {
-        'Estudio Minimalista': { lighting: 'Softbox Studio', framing: 'Headshot (85mm)', wardrobe: 'Casual Chic', film: 'Digital Clean' },
-        'Cinematográfico Noir': { lighting: 'Rembrandt (High Contrast)', framing: 'Close-up Intense', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400' },
-        'Old Money Luxury': { lighting: 'Golden Hour Natural', framing: 'Waist Up (50mm)', wardrobe: 'Old Money Aesthetic', film: 'Kodak Portra 400' },
-        'Cyberpunk Neon': { lighting: 'Neon Split (Blue/Red)', framing: 'Low Angle', wardrobe: 'Techwear', film: 'Digital Sharp' },
-        'Editorial Alta Costura': { lighting: 'Butterfly Lighting', framing: 'Full Body Fashion', wardrobe: 'Avant-Garde', film: 'Digital Clean' },
-        'Urbano / Street': { lighting: 'Natural Overcast', framing: 'Environmental (35mm)', wardrobe: 'Streetwear', film: 'Fujifilm Velvia' }
+        'Estudio Minimalista': { lighting: 'Softbox Studio', framing: 'Waist Up (50mm)', wardrobe: 'Minimalist Solid Colors', film: 'Digital Clean', pose: 'Standing Straight', expression: 'Neutral Serious' },
+        'Cinematográfico Noir': { lighting: 'Rembrandt (High Contrast)', framing: 'Close-up Intense', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400', pose: 'Profile', expression: 'Contemplative' },
+        'Old Money Luxury': { lighting: 'Golden Hour Natural', framing: 'Waist Up (50mm)', wardrobe: 'Old Money Aesthetic (Polo/Sweater)', film: 'Kodak Portra 400', pose: 'Hands in Pockets', expression: 'Confident Smirk' },
+        'Cyberpunk Neon': { lighting: 'Neon Split (Blue/Red)', framing: 'Low Angle', wardrobe: 'Techwear / Futuristic', film: 'Digital Sharp', pose: 'Dynamic', expression: 'Intense Gaze' },
+        'Editorial Alta Costura': { lighting: 'Butterfly Lighting', framing: 'Full Body Fashion', wardrobe: 'Avant-Garde Fashion', film: 'Digital Clean', pose: 'High Fashion', expression: 'Model Pout' },
+        'Urbano / Street': { lighting: 'Natural Overcast', framing: 'Environmental (35mm)', wardrobe: 'Streetwear (Hoodie/Layered)', film: 'Fujifilm Velvia', pose: 'Walking', expression: 'Relaxed' },
+        'Bohemio / Nature': { lighting: 'Natural Sunlight', framing: 'Medium Shot', wardrobe: 'Linen & Earth Tones', film: 'Kodak Gold', pose: 'Sitting Relaxed', expression: 'Peaceful' },
+        'Vintage 90s': { lighting: 'Direct Flash', framing: 'Medium Shot', wardrobe: '90s Grunge/Denim', film: 'Disposable Camera', pose: 'Casual Lean', expression: 'Candid' },
+        'Business Corporate': { lighting: 'Studio Multi-Point', framing: 'Headshot', wardrobe: 'Business Suit', film: 'Digital Clean', pose: 'Arms Crossed', expression: 'Confident Smile' },
+        'Fitness / Sport': { lighting: 'Hard Rim Light', framing: '3/4 Body', wardrobe: 'Athletic Gear', film: 'High Contrast', pose: 'Action/Stretch', expression: 'Focused' },
+        'Gótico / Dark': { lighting: 'Low Key', framing: 'Close-up', wardrobe: 'Gothic Black', film: 'Desaturated', pose: 'Mysterious', expression: 'Serious' },
+        'Surrealista / Dreamy': { lighting: 'Soft Haze', framing: 'Wide', wardrobe: 'Flowing Fabric', film: 'Pastel', pose: 'Floating/Dancing', expression: 'Dreamy' }
     },
     anime: {
         'One Piece Style': { lighting: 'Dramatic Shading', framing: 'Dynamic Angle', effect: 'Speed Lines' },
@@ -64,17 +70,20 @@ export const TEMPLATES = {
         id: 'professionalPhotoshoot', name: 'Studio Pro', desc: 'Editorial, LinkedIn, Headshots.',
         styles: ['Estudio Minimalista', 'Urbano / Street', 'Bohemio / Nature', 'Editorial Alta Costura', 'Cyberpunk Neon', 'Vintage 90s', 'Old Money Luxury', 'Cinematográfico Noir', 'Surrealista / Dreamy', 'Business Corporate', 'Fitness / Sport', 'Gótico / Dark'],
         options: {
-            lighting: ['Default', 'Softbox Studio', 'Rembrandt (High Contrast)', 'Butterfly Lighting', 'Natural Window', 'Neon Split (Blue/Red)', 'Golden Hour Natural', 'Ring Light'],
-            framing: ['Default', 'Headshot (85mm)', 'Waist Up (50mm)', 'Full Body (35mm)', 'Environmental (24mm)', 'Extreme Close-up'],
-            wardrobe: ['Default', 'Casual Chic', 'Business Formal', 'Old Money Aesthetic', 'Streetwear', 'Techwear', 'Avant-Garde', 'Minimalist'],
-            film: ['Default', 'Digital Clean', 'Kodak Portra 400', 'B&W Tri-X 400', 'Fujifilm Velvia', 'Cinestill 800T', 'Polaroid Vintage']
+            lighting: ['Default', 'Softbox Studio', 'Rembrandt (High Contrast)', 'Butterfly Lighting', 'Natural Window', 'Neon Split (Blue/Red)', 'Golden Hour Natural', 'Ring Light', 'Direct Flash'],
+            framing: ['Default', 'Headshot (85mm)', 'Waist Up (50mm)', 'Full Body (35mm)', 'Environmental (24mm)', 'Extreme Close-up', 'Low Angle'],
+            wardrobe: ['Default', 'Casual Chic', 'Business Formal', 'Old Money Aesthetic', 'Streetwear', 'Techwear', 'Avant-Garde', 'Minimalist', 'Bohemian', 'Gothic', 'Athletic'],
+            film: ['Default', 'Digital Clean', 'Kodak Portra 400', 'B&W Tri-X 400', 'Fujifilm Velvia', 'Cinestill 800T', 'Polaroid Vintage'],
+            pose: ['Default', 'Standing Straight', 'Arms Crossed', 'Hands in Pockets', 'Leaning', 'Walking', 'Sitting Relaxed', 'Profile', 'Dynamic Action', 'High Fashion'],
+            expression: ['Default', 'Neutral Serious', 'Soft Smile', 'Confident Smirk', 'Intense Gaze', 'Relaxed', 'Laughing (Natural)', 'Dreamy', 'Focused']
         },
         prompts: [
-            { id: 'LinkedIn Headshot', base: 'Professional business portrait, confident smile, neutral background. High-end corporate look.' },
-            { id: 'Editorial Fashion', base: 'High-fashion pose, dramatic lighting, avant-garde outfit. Magazine cover quality.' },
-            { id: 'Candid Laugh', base: 'Genuine laughter, looking away from camera, natural moment. No forced smile.' },
-            { id: 'Moody Portrait', base: 'Serious expression, shadow play, emotional depth.' },
-            { id: 'Personal Branding', base: 'Working on laptop in a modern cafe, lifestyle shot.' }
+            { id: 'LinkedIn Headshot', base: 'Professional business portrait, confident but natural expression. Slight smile or neutral. Business attire. Neutral studio background.' },
+            { id: 'Editorial Fashion', base: 'High-fashion pose, looking away or intense gaze. Dramatic lighting. Magazine cover quality.' },
+            { id: 'Cinematic Portrait', base: 'Close-up, emotional depth, dramatic shadows. Serious or contemplative expression. NO smiling.' },
+            { id: 'Casual Lifestyle', base: 'Relaxed pose in a modern setting. Candid moment, natural body language.' },
+            { id: 'Outdoor Business', base: 'Walking in a city business district. Dynamic movement. Natural lighting. Professional look.' },
+            { id: 'Creative Studio', base: 'Artistic lighting setup, unique angle. Creative and expressive portrait.' }
         ]
     },
     avatarStudio: {
@@ -195,6 +204,8 @@ export const getRealInstruction = (template, prompt, options) => {
     const effect = resolveSmartOption(template, activeStyle, 'effect', customParams.effect);
     const material = resolveSmartOption(template, activeStyle, 'material', customParams.material);
     const environment = resolveSmartOption(template, activeStyle, 'environment', customParams.environment);
+    const pose = resolveSmartOption(template, activeStyle, 'pose', customParams.pose);
+    const expression = resolveSmartOption(template, activeStyle, 'expression', customParams.expression);
 
     // Construir partes del prompt
     const p_light = lighting ? `LIGHTING: ${lighting}` : '';
@@ -204,6 +215,8 @@ export const getRealInstruction = (template, prompt, options) => {
     const p_effect = effect ? `EFFECT: ${effect}` : '';
     const p_mat = material ? `MATERIAL: ${material}` : '';
     const p_env = environment ? `ENVIRONMENT: ${environment}` : '';
+    const p_pose = pose ? `POSE: ${pose}` : '';
+    const p_expr = expression ? `EXPRESSION: ${expression}` : '';
 
     // SYSTEM CONTEXT
     const systemContext = `**SYSTEM:** Gemini 3 Pro Image. **MODE:** High-Fidelity Portrait. **CRITICAL:** PRESERVE SUBJECT IDENTITY. Maintain exact facial structure, eye shape, nose, and key features from input image. **SKIN:** Match the subject's original skin texture. Do NOT add acne, moles, or blemishes if not present in source. Do NOT beautify excessively, but keep skin clean and natural. Avoid plastic skin or uncanny valley effects.`;
@@ -212,7 +225,7 @@ export const getRealInstruction = (template, prompt, options) => {
 
     switch (template) {
         case 'professionalPhotoshoot':
-            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. Ensure high-end magazine quality. Skin must look natural and clear.`;
+            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. ${p_pose}. ${p_expr}. Ensure high-end magazine quality. Skin must look natural and clear.`;
             break;
 
         case 'avatarStudio':
