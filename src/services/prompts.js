@@ -34,8 +34,8 @@ export const DESTINATIONS_DATA = {
 // Define la dirección de arte automática cuando el usuario deja opciones en 'Default'
 const STYLE_PRESETS = {
     professionalPhotoshoot: {
-        'Estudio Minimalista': { lighting: 'Bright Softbox Studio', wardrobe: 'Minimalist Solid Colors', film: 'Digital Clean' }, // Removed framing/pose to allow variety
-        'Cinematográfico Noir': { lighting: 'Rembrandt (High Contrast)', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400' },
+        'Estudio Minimalista': { lighting: 'Soft Bright Lighting', wardrobe: 'Minimalist Solid Colors', film: 'Digital Clean' }, // Changed to effect description
+        'Cinematográfico Noir': { lighting: 'High Contrast Shadows', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400' },
         'Old Money Luxury': { lighting: 'Golden Hour Natural', wardrobe: 'Old Money Aesthetic (Polo/Sweater)', film: 'Kodak Portra 400' },
         'Cyberpunk Neon': { lighting: 'Neon Split (Blue/Red)', wardrobe: 'Techwear / Futuristic', film: 'Digital Sharp' },
         'Editorial Alta Costura': { lighting: 'Butterfly Lighting', wardrobe: 'Avant-Garde Fashion', film: 'Digital Clean' },
@@ -225,7 +225,7 @@ export const getRealInstruction = (template, prompt, options) => {
 
     switch (template) {
         case 'professionalPhotoshoot':
-            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. ${p_pose}. ${p_expr}. Ensure high-end magazine quality. Skin must look natural and clear.`;
+            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. ${p_pose}. ${p_expr}. Ensure high-end magazine quality. Skin must look natural and clear. **NEGATIVE PROMPT:** Do NOT show studio lighting equipment, softboxes, umbrellas, or stands in the frame. Clean background.`;
             break;
 
         case 'avatarStudio':
