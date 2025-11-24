@@ -51,7 +51,7 @@ export const TEMPLATES = {
             { id: 'Primer Plano', base: 'Extreme close-up portrait, focus on eyes. Shot on 85mm lens, f/1.8.' },
             { id: 'Corporativo', base: 'Professional headshot, business attire, neutral background. Soft lighting.' },
             { id: 'Cuerpo Entero', base: 'Full body fashion pose. Wide angle lens.' },
-            { id: 'Cándido', base: 'Caught in motion, subtle candid smile, looking away. Natural moment.' },
+            { id: 'Cándido', base: 'Caught in motion, relaxed natural expression, looking away. No forced smile.' },
             { id: 'Blanco y Negro', base: 'High contrast B&W classic portrait. Dramatic lighting.' },
             { id: 'Marca Personal', base: 'Working on a laptop in a modern cafe, lifestyle shot. Depth of field.' }
         ]
@@ -151,35 +151,15 @@ export const getRealInstruction = (template, prompt, options) => {
 
     const p_light = lighting ? `LIGHTING: ${lighting}` : '';
     const p_frame = framing ? `FRAMING: ${framing}` : '';
-    const p_film = film ? `FILM STOCK: ${film}` : '';
-    const p_pose = pose ? `POSE: ${pose}` : '';
-    const p_expr = expression ? `EXPRESSION: ${expression}` : '';
-    const p_time = time ? `TIME OF DAY: ${time}` : '';
-    const p_color = color ? `COLOR GRADING: ${color}` : '';
-
-    // SYSTEM CONTEXT MEJORADO: Identidad estricta
-    const systemContext = `**SYSTEM:** Gemini 3 Pro Image. **MODE:** Hyper-Realism (unless specified otherwise). **CRITICAL:** PRESERVE SUBJECT IDENTITY. Maintain exact facial structure, eye shape, nose, and key features from input image. Do NOT beautify or alter ethnicity/age. Avoid exaggerated expressions, plastic skin, or uncanny valley effects.`;
-
-    let taskInstruction = "";
-
-    switch (template) {
-        case 'professionalPhotoshoot':
-            taskInstruction = `**TASK:** Professional Photoshoot. **THEME:** ${styleParams.style}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}. Ensure high-end magazine quality. Skin texture must be realistic (pores, imperfections).`;
-            break;
-
-        case 'avatarStudio':
-            taskInstruction = `**TASK:** Digital Avatar Creation. **RENDER STYLE:** ${styleParams.avatarStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_pose}. ${p_expr}. Focus on perfect CGI/3D topology and textures. Even in stylized modes, keep the subject's key facial proportions.`;
-            break;
-
         case 'anime':
-            let animeStyleInstruction = `**ART STYLE:** ${styleParams.animeStyle}.`;
-            let sceneDescription = prompt.base;
+let animeStyleInstruction = `**ART STYLE:** ${styleParams.animeStyle}.`;
+let sceneDescription = prompt.base;
 
-            if (styleParams.animeStyle === 'One Piece Style') {
-                animeStyleInstruction = `**ART STYLE:** One Piece anime style by Eiichiro Oda. **CRITICAL:** Use bold ink lines, vibrant flat colors, exaggerated expressions, and dramatic shading (hatching). **WARDROBE OVERRIDE:** The subject MUST wear Pirate Era clothing (open captain's coat, vest, sash, or kimono). DISCARD modern casual clothes like plaid shirts or t-shirts.`;
+if (styleParams.animeStyle === 'One Piece Style') {
+    animeStyleInstruction = `**ART STYLE:** One Piece anime style by Eiichiro Oda. **CRITICAL:** Use bold ink lines, vibrant flat colors, exaggerated expressions, and dramatic shading (hatching). **WARDROBE OVERRIDE:** The subject MUST wear Pirate Era clothing (open captain's coat, vest, sash, or kimono). DISCARD modern casual clothes like plaid shirts or t-shirts.`;
 
-                if (prompt.id === 'Cartel de Se Busca') {
-                    sceneDescription = `A specific One Piece WANTED Poster. 
+    if (prompt.id === 'Cartel de Se Busca') {
+        sceneDescription = `A specific One Piece WANTED Poster. 
                     **LAYOUT:** Vertical vintage parchment paper with torn edges.
                     **TOP:** Text "WANTED" in bold, serif Western font.
                     **IMAGE:** The central image is NOT realistic. It is a rough, monochromatic INK SKETCH of the subject laughing or shouting, stylized like Oda's manga art.
@@ -187,41 +167,41 @@ export const getRealInstruction = (template, prompt, options) => {
                     **NAME:** Text "${animeCustoms.pirateName.toUpperCase()}" below the portrait.
                     **BOUNTY:** Text "B ${animeCustoms.bounty}" with the Berry symbol (looks like a B with a strike).
                     **BACKGROUND:** Wooden wall texture behind the poster.`;
-                } else if (prompt.id === 'Capitán en Barco') {
-                    sceneDescription = `A dramatic **TOP-DOWN HIGH-ANGLE SHOT**.
+    } else if (prompt.id === 'Capitán en Barco') {
+        sceneDescription = `A dramatic **TOP-DOWN HIGH-ANGLE SHOT**.
                     **FOREGROUND:** The Captain (subject) is seen from the chest up in the immediate foreground, looking out towards the adventure with a confident smirk. They are wearing a grand Captain's Coat draped over their shoulders like a cape.
                     **BACKGROUND:** Below and behind the captain, the FULL PIRATE SHIP is visible sailing on the blue Grand Line ocean. The ship is stylized and curvy (like the Thousand Sunny), painted in bright colors, with a massive "${animeCustoms.shipDesc}" figurehead clearly visible at the front.
                     **DETAILS:** News Coo seagulls flying below, white waves crashing against the hull.`;
-                } else if (prompt.id === 'Acción Haki') {
-                    sceneDescription = `Epic battle shot. The subject is using **Armament Haki** (arms coated in shiny black metal) and **Conqueror's Haki** (red/black lightning streaks). Intense, furious expression with white eyes. Clothing is torn battle-damaged pirate gear. Background: Floating rocks and purple aura effects (Onigashima style).`;
-                } else if (prompt.id === 'Cozy Vibes') {
-                    sceneDescription = `A festive pirate banquet scene. The subject is eating greedily with cheeks stuffed. **FOOD:** Huge chunks of Manga Meat on bones and a massive bowl of ramen. Exaggerated food proportions. Subject wears a Wano-style kimono or pirate vest. Vibrant, warm colors, steam rising from food.`;
-                } else if (prompt.id === 'Scene Replication') {
-                    sceneDescription = `Recreate the composition but transport the subject to the One Piece world. **CHANGE OUTFIT:** Dress the subject in cool pirate gear or marine uniform. Do not keep the original modern clothes. Use the signature Eiichiro Oda art style with bold lines.`;
-                }
-            }
+    } else if (prompt.id === 'Acción Haki') {
+        sceneDescription = `Epic battle shot. The subject is using **Armament Haki** (arms coated in shiny black metal) and **Conqueror's Haki** (red/black lightning streaks). Intense, furious expression with white eyes. Clothing is torn battle-damaged pirate gear. Background: Floating rocks and purple aura effects (Onigashima style).`;
+    } else if (prompt.id === 'Cozy Vibes') {
+        sceneDescription = `A festive pirate banquet scene. The subject is eating greedily with cheeks stuffed. **FOOD:** Huge chunks of Manga Meat on bones and a massive bowl of ramen. Exaggerated food proportions. Subject wears a Wano-style kimono or pirate vest. Vibrant, warm colors, steam rising from food.`;
+    } else if (prompt.id === 'Scene Replication') {
+        sceneDescription = `Recreate the composition but transport the subject to the One Piece world. **CHANGE OUTFIT:** Dress the subject in cool pirate gear or marine uniform. Do not keep the original modern clothes. Use the signature Eiichiro Oda art style with bold lines.`;
+    }
+}
 
-            taskInstruction = `**TASK:** Anime Transformation. ${animeStyleInstruction} **SCENE:** ${sceneDescription}. Maintain the subject's key facial features (eyes, nose shape) but stylized.`;
-            break;
+taskInstruction = `**TASK:** Anime Transformation. ${animeStyleInstruction} **SCENE:** ${sceneDescription}. Maintain the subject's key facial features (eyes, nose shape) but stylized.`;
+break;
 
         case 'figurine':
-            taskInstruction = `**TASK:** Macro Photography of Miniature Figurine. **MATERIAL:** ${styleParams.material}. **SCENE:** ${prompt.base}. Create a tilt-shift effect with shallow depth of field. The subject looks like a collectible toy.`;
-            break;
+taskInstruction = `**TASK:** Macro Photography of Miniature Figurine. **MATERIAL:** ${styleParams.material}. **SCENE:** ${prompt.base}. Create a tilt-shift effect with shallow depth of field. The subject looks like a collectible toy.`;
+break;
 
         case 'timeTravel':
-            taskInstruction = `**TASK:** Historical Reenactment. **ERA/THEME:** ${styleParams.era}. **SCENE:** ${prompt.base}. Apply period-accurate film grain, camera imperfections, and vintage color grading. ${wardrobe} must match the era perfectly. Subject MUST wear period-accurate clothing. NO modern clothes.`;
-            break;
+taskInstruction = `**TASK:** Historical Reenactment. **ERA/THEME:** ${styleParams.era}. **SCENE:** ${prompt.base}. Apply period-accurate film grain, camera imperfections, and vintage color grading. ${wardrobe} must match the era perfectly. Subject MUST wear period-accurate clothing. NO modern clothes.`;
+break;
 
         case 'travelPhotoshoot':
-            taskInstruction = `**TASK:** Travel Photography. **DESTINATION:** ${styleParams.destination}. **LANDMARK/SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${wardrobe}. ${p_time}. Integrate subject lighting perfectly with the environment. Ensure the landmark is iconic and recognizable in the background.`;
-            break;
+taskInstruction = `**TASK:** Travel Photography. **DESTINATION:** ${styleParams.destination}. **LANDMARK/SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${wardrobe}. ${p_time}. Integrate subject lighting perfectly with the environment. Ensure the landmark is iconic and recognizable in the background.`;
+break;
 
         case 'customGen':
-            taskInstruction = `**TASK:** Custom Vision. **PROMPT:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}.`;
-            break;
+taskInstruction = `**TASK:** Custom Vision. **PROMPT:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}.`;
+break;
 
         default:
-            taskInstruction = `**SCENE:** ${prompt.base}.`;
+taskInstruction = `**SCENE:** ${prompt.base}.`;
     }
-    return `${systemContext} ${taskInstruction} **INPUT:** Use input image for facial biometrics only.`;
+return `${systemContext} ${taskInstruction} **INPUT:** Use input image for facial biometrics only.`;
 };
