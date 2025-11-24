@@ -52,7 +52,7 @@ export const TEMPLATES = {
             { id: 'Corporativo', base: 'Professional headshot, business attire, neutral background. Soft lighting.' },
             { id: 'Cuerpo Entero', base: 'Full body fashion pose. Wide angle lens.' },
             { id: 'Cándido', base: 'Caught in motion, relaxed natural expression, looking away. No forced smile.' },
-            { id: 'Blanco y Negro', base: 'High contrast B&W classic portrait. Dramatic lighting.' },
+            { id: 'Blanco y Negro', base: 'High contrast B&W classic portrait. Soft lighting to ensure smooth skin texture. No blemishes.' },
             { id: 'Marca Personal', base: 'Working on a laptop in a modern cafe, lifestyle shot. Depth of field.' }
         ]
     },
