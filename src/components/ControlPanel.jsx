@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TEMPLATES, DESTINATIONS_DATA, OPTIONS_LISTS } from '../services/prompts';
-import { Settings2, MapPin, Shirt, Sparkles, Wand2, BrainCircuit, User, Zap, Box, Clock } from 'lucide-react';
+import { TEMPLATES, DESTINATIONS_DATA } from '../services/prompts';
+import { Settings2, MapPin, Sparkles, Wand2, BrainCircuit, User, Zap, Box, Clock, Sliders } from 'lucide-react';
 
 const Dropdown = ({ label, value, options, onChange, icon: Icon }) => (
     <div className="group">
@@ -11,7 +11,7 @@ const Dropdown = ({ label, value, options, onChange, icon: Icon }) => (
         <div className="relative">
             <select
                 className="w-full bg-black/50 border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none appearance-none transition-all hover:border-gray-600 cursor-pointer"
-                value={value}
+                value={value || 'Default'}
                 onChange={e => onChange(e.target.value)}
             >
                 {options.map(o => <option key={o} value={o}>{o}</option>)}
@@ -22,6 +22,16 @@ const Dropdown = ({ label, value, options, onChange, icon: Icon }) => (
         </div>
     </div>
 );
+
+const OPTION_LABELS = {
+    lighting: 'Iluminación',
+    framing: 'Encuadre / Cámara',
+    wardrobe: 'Vestuario',
+    film: 'Tipo de Película',
+    effect: 'Efectos Especiales',
+    material: 'Material',
+    environment: 'Entorno'
+};
 
 export const ControlPanel = ({
     selectedTemplate,
@@ -34,11 +44,18 @@ export const ControlPanel = ({
     handleVisualMuse, handleEnhanceFreePrompt, isEnhancing, handleGenerate, isGenerating, uploadedImage, error
 }) => {
 
+    const currentTemplate = TEMPLATES[selectedTemplate];
+
     const toggleLandmark = (landmark) => {
         setSelectedLandmarks(prev => {
             if (prev.includes(landmark)) return prev.filter(l => l !== landmark);
             return [...prev, landmark];
         });
+    };
+
+    // Helper para actualizar customParams
+    const updateCustomParam = (key, value) => {
+        setCustomParams(prev => ({ ...prev, [key]: value }));
     };
 
     return (
@@ -51,7 +68,7 @@ export const ControlPanel = ({
             </div>
 
             <div className="space-y-5">
-                {/* --- CONTROLES ESPECÍFICOS POR PLANTILLA --- */}
+                {/* --- CONTROLES ESPECÍFICOS POR PLANTILLA (ESTILO PRINCIPAL) --- */}
                 <AnimatePresence mode='wait'>
                     <motion.div
                         key={selectedTemplate}
@@ -60,6 +77,25 @@ export const ControlPanel = ({
                         exit={{ opacity: 0, y: -10 }}
                         className="space-y-4"
                     >
+                        {/* 1. SELECTOR DE ESTILO PRINCIPAL (Si la plantilla tiene styles) */}
+                        {currentTemplate.styles && (
+                            <Dropdown
+                                label="Estilo Visual"
+                                value={styleParams.style || styleParams.avatarStyle || styleParams.animeStyle || styleParams.material || styleParams.era} // Fallback logic
+                                options={currentTemplate.styles}
+                                onChange={v => {
+                                    // Actualizar el param correcto según la plantilla (manteniendo compatibilidad con App.jsx)
+                                    if (selectedTemplate === 'professionalPhotoshoot') setStyleParams({ ...styleParams, style: v });
+                                    else if (selectedTemplate === 'avatarStudio') setStyleParams({ ...styleParams, avatarStyle: v });
+                                    else if (selectedTemplate === 'anime') setStyleParams({ ...styleParams, animeStyle: v });
+                                    else if (selectedTemplate === 'figurine') setStyleParams({ ...styleParams, material: v });
+                                    else if (selectedTemplate === 'timeTravel') setStyleParams({ ...styleParams, era: v });
+                                }}
+                                icon={Sparkles}
+                            />
+                        )}
+
+                        {/* 2. LOGICA ESPECIFICA DE TRAVEL (DESTINOS) */}
                         {selectedTemplate === 'travelPhotoshoot' && (
                             <div className="space-y-4">
                                 <Dropdown
@@ -106,10 +142,7 @@ export const ControlPanel = ({
                             </div>
                         )}
 
-                        {selectedTemplate === 'professionalPhotoshoot' && <Dropdown label="Estilo Visual" value={styleParams.style} options={TEMPLATES.professionalPhotoshoot?.styles || []} onChange={v => setStyleParams({ ...styleParams, style: v })} icon={Sparkles} />}
-                        {selectedTemplate === 'avatarStudio' && <Dropdown label="Estilo de Render" value={styleParams.avatarStyle} options={TEMPLATES.avatarStudio?.styles || []} onChange={v => setStyleParams({ ...styleParams, avatarStyle: v })} icon={User} />}
-                        {selectedTemplate === 'anime' && <Dropdown label="Estilo de Animación" value={styleParams.animeStyle} options={TEMPLATES.anime?.styles || []} onChange={v => setStyleParams({ ...styleParams, animeStyle: v })} icon={Zap} />}
-
+                        {/* 3. LOGICA ESPECIFICA DE ANIME (ONE PIECE) */}
                         {selectedTemplate === 'anime' && styleParams.animeStyle === 'One Piece Style' && (
                             <div className="p-4 bg-blue-900/10 border border-blue-500/30 rounded-xl space-y-3 relative overflow-hidden">
                                 <div className="absolute top-0 right-0 p-2 opacity-10"><span className="text-4xl">🏴‍☠️</span></div>
@@ -122,9 +155,7 @@ export const ControlPanel = ({
                             </div>
                         )}
 
-                        {selectedTemplate === 'figurine' && <Dropdown label="Material" value={styleParams.material} options={TEMPLATES.figurine?.styles || []} onChange={v => setStyleParams({ ...styleParams, material: v })} icon={Box} />}
-                        {selectedTemplate === 'timeTravel' && <Dropdown label="Era Histórica" value={styleParams.era} options={TEMPLATES.timeTravel?.styles || []} onChange={v => setStyleParams({ ...styleParams, era: v })} icon={Clock} />}
-
+                        {/* 4. CUSTOM GEN INPUT */}
                         {selectedTemplate === 'customGen' && (
                             <div className="space-y-2">
                                 <div className="flex justify-between items-end">
@@ -145,16 +176,26 @@ export const ControlPanel = ({
                     </motion.div>
                 </AnimatePresence>
 
-                {/* --- CONTROLES GLOBALES (GRID) --- */}
-                <div className="pt-4 border-t border-gray-800">
-                    <h4 className="text-[10px] font-bold text-gray-600 uppercase mb-3">Ajustes Finos</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                        <Dropdown label="Vestuario" value={customParams.wardrobe} options={OPTIONS_LISTS.wardrobe} onChange={v => setCustomParams({ ...customParams, wardrobe: v })} icon={Shirt} />
-                        <Dropdown label="Iluminación" value={customParams.lighting} options={OPTIONS_LISTS.lighting} onChange={v => setCustomParams({ ...customParams, lighting: v })} />
-                        <Dropdown label="Encuadre" value={customParams.framing} options={OPTIONS_LISTS.framing} onChange={v => setCustomParams({ ...customParams, framing: v })} />
-                        <Dropdown label="Color" value={customParams.color} options={OPTIONS_LISTS.color} onChange={v => setCustomParams({ ...customParams, color: v })} />
+                {/* --- CONTROLES DINÁMICOS (AJUSTES FINOS) --- */}
+                {/* Renderiza solo las opciones disponibles para la plantilla actual */}
+                {currentTemplate.options && (
+                    <div className="pt-4 border-t border-gray-800">
+                        <h4 className="text-[10px] font-bold text-gray-600 uppercase mb-3 flex items-center gap-2">
+                            <Sliders size={12} /> Ajustes Finos
+                        </h4>
+                        <div className="grid grid-cols-2 gap-3">
+                            {Object.entries(currentTemplate.options).map(([key, optionsList]) => (
+                                <Dropdown
+                                    key={key}
+                                    label={OPTION_LABELS[key] || key}
+                                    value={customParams[key]}
+                                    options={optionsList}
+                                    onChange={v => updateCustomParam(key, v)}
+                                />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* --- BOTÓN GENERAR --- */}
                 <button

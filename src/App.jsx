@@ -50,6 +50,9 @@ function App() {
     }
 
     setStyleParams(newStyleParams);
+
+    // Resetear customParams para evitar valores incompatibles entre plantillas
+    setCustomParams({});
   }, [selectedTemplate]);
   const [customParams, setCustomParams] = useState({
     lighting: 'Default', framing: 'Default', film: 'Default',

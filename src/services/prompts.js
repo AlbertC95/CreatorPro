@@ -30,154 +30,203 @@ export const DESTINATIONS_DATA = {
     }
 };
 
-// --- LISTAS DE OPCIONES ---
-export const OPTIONS_LISTS = {
-    lighting: ['Default', '🎲 Sorpréndeme', 'Suave (Softbox)', 'Dura (Hard Sun)', 'Cinemática (Teal/Orange)', 'Neón (Cyberpunk)', 'Natural (Window)', 'Rembrandt', 'Studio Flash'],
-    framing: ['Default', '🎲 Sorpréndeme', 'Primer Plano (85mm)', 'Gran Angular (24mm)', 'Ojo de Pez', 'Desde Abajo (Heroic)', 'Desde Arriba (Drone)', 'Plano Americano'],
-    film: ['Default', '🎲 Sorpréndeme', 'Kodak Portra 400', 'Fujifilm Velvia', 'Cinestill 800T', 'B&W Tri-X', 'Polaroid Vintage', 'Digital Clean'],
-    wardrobe: ['Default', 'Estilo Polo Ralph Lauren', '🎲 Sorpréndeme', 'Original (Mantener)', 'Casual Chic', 'Traje Ejecutivo', 'Alta Costura', 'Techwear / Futuro', 'Vintage Retro', 'Ropa Deportiva', 'Uniforme Heroico', 'Elegante Noche'],
-    pose: ['Default', '🎲 Sorpréndeme', 'Original (Mantener)', 'Brazos Cruzados', 'Manos en Bolsillos', 'Caminando', 'Perfil Artístico', 'Mirada sobre Hombro', 'Sentado Relajado', 'Salto Dinámico'],
-    expression: ['Default', '🎲 Sorpréndeme', 'Original (Mantener)', 'Sonrisa Radiante', 'Serio / Intenso', 'Misterioso', 'Sorpresa', 'Risa Cándida', 'Paz / Ojos Cerrados', 'Grito de Batalla'],
-    time: ['Default', '🎲 Sorpréndeme', 'Amanecer', 'Mediodía Dura', 'Hora Dorada', 'Hora Azul', 'Noche Neón', 'Día Nublado', 'Medianoche'],
-    color: ['Default', '🎲 Sorpréndeme', 'Natural Realista', 'B&W Alto Contraste', 'Teal & Orange (Cine)', 'Kodak Gold (Cálido)', 'Desaturado (Drama)', 'Vibrante Pop', 'Pastel Wes Anderson', 'Matrix Green']
+// --- PRESETS DE ESTILO (SMART DEFAULTS) ---
+// Define la dirección de arte automática cuando el usuario deja opciones en 'Default'
+const STYLE_PRESETS = {
+    professionalPhotoshoot: {
+        'Estudio Minimalista': { lighting: 'Softbox Studio', framing: 'Headshot (85mm)', wardrobe: 'Casual Chic', film: 'Digital Clean' },
+        'Cinematográfico Noir': { lighting: 'Rembrandt (High Contrast)', framing: 'Close-up Intense', wardrobe: 'Vintage Formal', film: 'B&W Tri-X 400' },
+        'Old Money Luxury': { lighting: 'Golden Hour Natural', framing: 'Waist Up (50mm)', wardrobe: 'Old Money Aesthetic', film: 'Kodak Portra 400' },
+        'Cyberpunk Neon': { lighting: 'Neon Split (Blue/Red)', framing: 'Low Angle', wardrobe: 'Techwear', film: 'Digital Sharp' },
+        'Editorial Alta Costura': { lighting: 'Butterfly Lighting', framing: 'Full Body Fashion', wardrobe: 'Avant-Garde', film: 'Digital Clean' },
+        'Urbano / Street': { lighting: 'Natural Overcast', framing: 'Environmental (35mm)', wardrobe: 'Streetwear', film: 'Fujifilm Velvia' }
+    },
+    anime: {
+        'One Piece Style': { lighting: 'Dramatic Shading', framing: 'Dynamic Angle', effect: 'Speed Lines' },
+        'Studio Ghibli': { lighting: 'Soft Natural Pictorial', framing: 'Wide Scenery', effect: 'None' },
+        'Retro 90s': { lighting: 'Flat Anime Lighting', framing: 'Standard', effect: 'VHS Glitch' },
+        'Cyberpunk Anime': { lighting: 'Neon Glow', framing: 'Dutch Angle', effect: 'Holograms' }
+    },
+    avatarStudio: {
+        'CGI Hiperrealista': { lighting: 'Studio 3-Point', material: 'Skin SSS (Subsurface)', framing: 'Portrait' },
+        'Videojuego AAA (Unreal 5)': { lighting: 'HDR Map', material: 'Detailed Texture', framing: 'Hero Pose' },
+        'Escultura de Mármol': { lighting: 'Museum Spot', material: 'White Marble', framing: 'Bust' }
+    },
+    timeTravel: {
+        '1920s Gatsby': { film: 'Sepia / B&W Soft', framing: 'Static Portrait' },
+        '1980s Mall': { film: 'Vintage Polaroid', framing: 'Medium Shot' }
+    }
 };
 
-// --- PLANTILLAS ---
+// --- PLANTILLAS Y OPCIONES ÚNICAS ---
 export const TEMPLATES = {
     professionalPhotoshoot: {
         id: 'professionalPhotoshoot', name: 'Studio Pro', desc: 'Editorial, LinkedIn, Headshots.',
         styles: ['Estudio Minimalista', 'Urbano / Street', 'Bohemio / Nature', 'Editorial Alta Costura', 'Cyberpunk Neon', 'Vintage 90s', 'Old Money Luxury', 'Cinematográfico Noir', 'Surrealista / Dreamy', 'Business Corporate', 'Fitness / Sport', 'Gótico / Dark'],
+        options: {
+            lighting: ['Default', 'Softbox Studio', 'Rembrandt (High Contrast)', 'Butterfly Lighting', 'Natural Window', 'Neon Split (Blue/Red)', 'Golden Hour Natural', 'Ring Light'],
+            framing: ['Default', 'Headshot (85mm)', 'Waist Up (50mm)', 'Full Body (35mm)', 'Environmental (24mm)', 'Extreme Close-up'],
+            wardrobe: ['Default', 'Casual Chic', 'Business Formal', 'Old Money Aesthetic', 'Streetwear', 'Techwear', 'Avant-Garde', 'Minimalist'],
+            film: ['Default', 'Digital Clean', 'Kodak Portra 400', 'B&W Tri-X 400', 'Fujifilm Velvia', 'Cinestill 800T', 'Polaroid Vintage']
+        },
         prompts: [
-            { id: 'Primer Plano', base: 'Extreme close-up portrait, focus on eyes. Shot on 85mm lens, f/1.8.' },
-            { id: 'Corporativo', base: 'Professional headshot, business attire, neutral background. Soft lighting.' },
-            { id: 'Cuerpo Entero', base: 'Full body fashion pose. Wide angle lens.' },
-            { id: 'Cándido', base: 'Caught in motion, relaxed natural expression, looking away. No forced smile.' },
-            { id: 'Blanco y Negro', base: 'High contrast B&W classic portrait. Soft lighting to ensure smooth skin texture. No blemishes.' },
-            { id: 'Marca Personal', base: 'Working on a laptop in a modern cafe, lifestyle shot. Depth of field.' }
+            { id: 'LinkedIn Headshot', base: 'Professional business portrait, confident smile, neutral background. High-end corporate look.' },
+            { id: 'Editorial Fashion', base: 'High-fashion pose, dramatic lighting, avant-garde outfit. Magazine cover quality.' },
+            { id: 'Candid Laugh', base: 'Genuine laughter, looking away from camera, natural moment. No forced smile.' },
+            { id: 'Moody Portrait', base: 'Serious expression, shadow play, emotional depth.' },
+            { id: 'Personal Branding', base: 'Working on laptop in a modern cafe, lifestyle shot.' }
         ]
     },
     avatarStudio: {
         id: 'avatarStudio', name: 'Avatar 3D', desc: 'CGI, Videojuegos, Esculturas.',
         styles: ['CGI Hiperrealista', 'Videojuego AAA (Unreal 5)', 'Cyber-Humano (Sci-Fi)', 'Estilo Pixar / Disney', 'Escultura de Mármol', 'Claymation (Arcilla)', 'Dibujo a Lápiz (Sketch)', 'Pintura al Óleo', 'Low Poly Art'],
+        options: {
+            lighting: ['Default', 'Studio 3-Point', 'HDR Map', 'Neon Rim', 'Soft Area', 'Museum Spot'],
+            framing: ['Default', 'Portrait', 'Full Character', 'T-Pose', 'Action Angle', 'Bust'],
+            material: ['Default', 'Skin SSS (Subsurface)', 'Plastic Toy', 'Clay', 'White Marble', 'Gold', 'Hologram']
+        },
         prompts: [
             { id: 'ID Biométrica', base: 'Front facing neutral, perfect lighting. High skin texture detail.' },
             { id: 'Héroe RPG', base: 'Dynamic combat pose, magical aura. Fantasy armor.' },
             { id: 'Perfil Cibernético', base: 'Side profile view, neon circuitry on skin. Cyberpunk aesthetics.' },
             { id: 'Estatua Clásica', base: 'Marble bust in a museum. Museum lighting.' },
-            { id: 'Primer Plano', base: 'Extreme close up on face textures. Pores and imperfections visible.' },
-            { id: 'Cuerpo Entero', base: 'Full body character design sheet. Neutral background.' }
+            { id: 'Concept Art', base: 'Character design sheet, neutral background, multiple angles.' }
         ]
     },
     anime: {
         id: 'anime', name: 'Anime World', desc: 'Ghibli, Shonen, Retro 90s.',
         styles: ['Studio Ghibli', 'One Piece Style', '90s Retro', 'Modern Shonen', 'Makoto Shinkai (Scenery)', 'Cyberpunk Anime'],
+        options: {
+            lighting: ['Default', 'Flat Anime Lighting', 'Dramatic Shading', 'Sunset', 'Moonlight', 'Neon Glow'],
+            framing: ['Default', 'Standard', 'Close-up Intense', 'Dutch Angle', 'Wide Scenery'],
+            effect: ['Default', 'None', 'Speed Lines', 'Magical Aura', 'Sakura Petals', 'Glitch', 'VHS Glitch']
+        },
         prompts: [
             { id: 'Scene Replication', base: 'Same composition as original, converted to anime style.' },
+            { id: 'Ultimate Attack', base: 'Unleashing a powerful special move with aura effects. Dynamic action.' },
+            { id: 'Nakama Moment', base: 'Celebrating with friends/crew, holding a drink/food. Cheerful.' },
+            { id: 'Villain Stare', base: 'Menacing expression, shadows covering eyes, intense pressure.' },
+            { id: 'Cozy Vibes', base: 'Eating ramen in a cozy shop. Warm atmosphere.' },
             { id: 'Cartel de Se Busca', base: 'Custom Wanted Poster.' },
-            { id: 'Capitán en Barco', base: 'Captain on custom ship.' },
-            { id: 'Acción Haki', base: 'Preparing a special attack, dynamic speed lines, Haki aura.' },
-            { id: 'Cozy Vibes', base: 'Eating ramen in a cozy shop.' },
-            { id: 'Epic Stare', base: 'Close up intense stare with wind blowing hair.' }
+            { id: 'Capitán en Barco', base: 'Captain on custom ship.' }
         ]
     },
     figurine: {
         id: 'figurine', name: 'Miniature Me', desc: 'Juguetes y Coleccionables.',
         styles: ['Plástico Vinilo', 'Porcelana Fina', 'Madera Tallada', 'Muñeco de Peluche', 'Action Figure Retro'],
+        options: {
+            material: ['Default', 'Vinyl', 'Resin', 'Wood', 'Plush', 'Gold'],
+            environment: ['Default', 'Wooden Desk', 'Collector Box', 'Diorama Battle', 'Plain White', 'Shelf']
+        },
         prompts: [
             { id: 'Macro Desk', base: 'Standing on a wooden desk, shallow depth of field.' },
             { id: 'Packaging', base: 'Inside a collector box.' },
             { id: 'Diorama', base: 'In a miniature battle scene.' },
-            { id: 'Estante de Coleccionista', base: 'Standing on a shelf among other toys.' },
-            { id: 'En Mano Gigante', base: 'Being held by a giant human hand.' },
-            { id: 'Empaque Vintage', base: 'Inside a vintage blister pack with retro graphics.' }
+            { id: 'Estante', base: 'Standing on a shelf among other toys.' }
         ]
     },
     timeTravel: {
         id: 'timeTravel', name: 'Time Traveler', desc: '80s Mall, 1920s, Victorian.',
         styles: ['1980s Mall Portrait', '1990s Grunge', '1950s Diner', '1920s Gatsby', 'Victorian Era', 'Wild West'],
+        options: {
+            film: ['Default', 'Vintage Polaroid', 'Sepia / B&W Soft', 'Kodachrome', 'VHS Tape', 'Daguerreotype'],
+            framing: ['Default', 'Static Portrait', 'Candid Snapshot', 'Family Photo Pose']
+        },
         prompts: [
             { id: 'Classic Portrait', base: 'Standard period-accurate portrait pose.' },
             { id: 'Candid Moment', base: 'Laughing with period-accurate props.' },
-            { id: 'Double Exposure', base: 'Artistic double exposure (80s style).' },
             { id: 'Anuario Escolar', base: 'Vintage yearbook photo style.' },
-            { id: 'Foto Familiar', base: 'Posing stiffly like an old family photo.' },
             { id: 'Noticiero TV', base: 'On a vintage TV screen broadcast.' }
         ]
     },
     travelPhotoshoot: {
         id: 'travelPhotoshoot', name: 'Global Traveler', desc: 'Teletransporte instantáneo.',
         destinations: Object.keys(DESTINATIONS_DATA),
+        options: {
+            lighting: ['Default', 'Golden Hour', 'Blue Hour', 'Midday Sun', 'Night City Lights'],
+            framing: ['Default', 'Full Body Tourist', 'Selfie Angle', 'Wide Landscape'],
+            wardrobe: ['Default', 'Tourist Casual', 'Local Traditional', 'Elegant Traveler']
+        },
         prompts: [] // Se generan dinámicamente
     },
-    customGen: { id: 'customGen', name: 'Prompt Libre', desc: 'Tú escribes, Gemini crea.', isCustom: true }
+    customGen: {
+        id: 'customGen', name: 'Prompt Libre', desc: 'Tú escribes, Gemini crea.', isCustom: true,
+        options: {
+            lighting: ['Default', 'Cinematic', 'Natural', 'Studio', 'Neon'],
+            framing: ['Default', 'Wide', 'Medium', 'Close-up'],
+            film: ['Default', 'Digital', 'Film Grain', 'B&W'],
+            color: ['Default', 'Vibrant', 'Muted', 'Pastel', 'Dark']
+        }
+    }
 };
 
-// --- LÓGICA DE SELECCIÓN INTELIGENTE ---
-const resolveOption = (selected, optionsList) => {
-    if (!selected || selected === 'Default') return ''; // Gemini decide
-    if (selected === '🎲 Sorpréndeme') {
-        const validOptions = optionsList.filter(o => o !== 'Default' && o !== '🎲 Sorpréndeme');
-        const randomChoice = validOptions[Math.floor(Math.random() * validOptions.length)];
-        return randomChoice;
+// --- LÓGICA DE RESOLUCIÓN INTELIGENTE ---
+const resolveSmartOption = (templateId, style, category, userValue) => {
+    // 1. Si el usuario eligió algo específico (no Default), usar eso.
+    if (userValue && userValue !== 'Default') return userValue;
+
+    // 2. Si es Default, buscar en los PRESETS
+    const preset = STYLE_PRESETS[templateId]?.[style];
+    if (preset && preset[category]) {
+        return preset[category]; // Retorna el valor del preset (ej: 'Rembrandt')
     }
-    return selected;
+
+    // 3. Si no hay preset, retornar vacío (Gemini decide)
+    return '';
 };
 
 // --- INGENIERÍA DE PROMPTS ---
 export const getRealInstruction = (template, prompt, options) => {
     const { styleParams, customParams, animeCustoms, travelOptions } = options;
+    const tConfig = TEMPLATES[template];
 
-    // Resolver opciones
-    const lighting = resolveOption(customParams.lighting, OPTIONS_LISTS.lighting);
-    const framing = resolveOption(customParams.framing, OPTIONS_LISTS.framing);
-    const film = resolveOption(customParams.film, OPTIONS_LISTS.film);
-    let wardrobe = resolveOption(customParams.wardrobe, OPTIONS_LISTS.wardrobe);
-    const pose = resolveOption(customParams.pose, OPTIONS_LISTS.pose);
-    const expression = resolveOption(customParams.expression, OPTIONS_LISTS.expression);
-    const time = resolveOption(customParams.time, OPTIONS_LISTS.time);
-    const color = resolveOption(customParams.color, OPTIONS_LISTS.color);
+    // Determinar el estilo activo
+    let activeStyle = styleParams.style;
+    if (template === 'avatarStudio') activeStyle = styleParams.avatarStyle;
+    if (template === 'anime') activeStyle = styleParams.animeStyle;
+    if (template === 'figurine') activeStyle = styleParams.material; // En figurine el estilo es el material principal
+    if (template === 'timeTravel') activeStyle = styleParams.era;
 
-    // Lógica de Vestuario Local en Viajes
-    if (template === 'travelPhotoshoot' && travelOptions?.useLocalWardrobe && DESTINATIONS_DATA[styleParams.destination]) {
-        wardrobe = DESTINATIONS_DATA[styleParams.destination].localWardrobe;
-    }
+    // Resolver opciones inteligentes
+    const lighting = resolveSmartOption(template, activeStyle, 'lighting', customParams.lighting);
+    const framing = resolveSmartOption(template, activeStyle, 'framing', customParams.framing);
+    const wardrobe = resolveSmartOption(template, activeStyle, 'wardrobe', customParams.wardrobe);
+    const film = resolveSmartOption(template, activeStyle, 'film', customParams.film);
+    const effect = resolveSmartOption(template, activeStyle, 'effect', customParams.effect);
+    const material = resolveSmartOption(template, activeStyle, 'material', customParams.material);
+    const environment = resolveSmartOption(template, activeStyle, 'environment', customParams.environment);
 
-    // Lógica para Polo Ralph Lauren (Inyección de Estilo Old Money)
-    if (wardrobe === 'Estilo Polo Ralph Lauren') {
-        wardrobe = "WARDROBE: Polo Ralph Lauren Style (Old Money Aesthetic). Classic polo shirt with small pony logo OR crisp oxford shirt, cable-knit sweater draped over shoulders, chinos or tailored shorts. High-quality fabrics, preppy and sophisticated look. Colors: Navy, White, Beige, Pastel Pink/Green.";
-    } else {
-        wardrobe = wardrobe ? `WARDROBE: ${wardrobe}` : '';
-    }
-
+    // Construir partes del prompt
     const p_light = lighting ? `LIGHTING: ${lighting}` : '';
     const p_frame = framing ? `FRAMING: ${framing}` : '';
+    const p_wardrobe = wardrobe ? `WARDROBE: ${wardrobe}` : '';
     const p_film = film ? `FILM STOCK: ${film}` : '';
-    const p_pose = pose ? `POSE: ${pose}` : '';
-    const p_expr = expression ? `EXPRESSION: ${expression}` : '';
-    const p_time = time ? `TIME OF DAY: ${time}` : '';
-    const p_color = color ? `COLOR GRADING: ${color}` : '';
+    const p_effect = effect ? `EFFECT: ${effect}` : '';
+    const p_mat = material ? `MATERIAL: ${material}` : '';
+    const p_env = environment ? `ENVIRONMENT: ${environment}` : '';
 
-    // SYSTEM CONTEXT MEJORADO: Identidad estricta y limpieza
+    // SYSTEM CONTEXT
     const systemContext = `**SYSTEM:** Gemini 3 Pro Image. **MODE:** High-Fidelity Portrait. **CRITICAL:** PRESERVE SUBJECT IDENTITY. Maintain exact facial structure, eye shape, nose, and key features from input image. **SKIN:** Match the subject's original skin texture. Do NOT add acne, moles, or blemishes if not present in source. Do NOT beautify excessively, but keep skin clean and natural. Avoid plastic skin or uncanny valley effects.`;
 
     let taskInstruction = "";
 
     switch (template) {
         case 'professionalPhotoshoot':
-            taskInstruction = `**TASK:** Professional Photoshoot. **THEME:** ${styleParams.style}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}. Ensure high-end magazine quality. Skin must look natural and clear.`;
+            taskInstruction = `**TASK:** Professional Photoshoot. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_wardrobe}. ${p_film}. Ensure high-end magazine quality. Skin must look natural and clear.`;
             break;
 
         case 'avatarStudio':
-            taskInstruction = `**TASK:** Digital Avatar Creation. **RENDER STYLE:** ${styleParams.avatarStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_pose}. ${p_expr}. Focus on perfect CGI/3D topology and textures. Even in stylized modes, keep the subject's key facial proportions.`;
+            taskInstruction = `**TASK:** Digital Avatar Creation. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_mat}. Focus on perfect CGI/3D topology and textures. Even in stylized modes, keep the subject's key facial proportions.`;
             break;
 
         case 'anime':
-            let animeStyleInstruction = `**ART STYLE:** ${styleParams.animeStyle}.`;
+            let animeStyleInstruction = `**ART STYLE:** ${activeStyle}.`;
             let sceneDescription = prompt.base;
 
-            if (styleParams.animeStyle === 'One Piece Style') {
+            if (activeStyle === 'One Piece Style') {
                 animeStyleInstruction = `**ART STYLE:** One Piece anime style by Eiichiro Oda. **CRITICAL:** Use bold ink lines, vibrant flat colors, exaggerated expressions, and dramatic shading (hatching). **WARDROBE OVERRIDE:** The subject MUST wear Pirate Era clothing (open captain's coat, vest, sash, or kimono). DISCARD modern casual clothes like plaid shirts or t-shirts.`;
 
+                // Lógica específica de One Piece (Carteles, etc) se mantiene igual...
                 if (prompt.id === 'Cartel de Se Busca') {
                     sceneDescription = `A specific One Piece WANTED Poster. 
                     **LAYOUT:** Vertical vintage parchment paper with torn edges.
@@ -190,38 +239,37 @@ export const getRealInstruction = (template, prompt, options) => {
                 } else if (prompt.id === 'Capitán en Barco') {
                     sceneDescription = `A dramatic **TOP-DOWN HIGH-ANGLE SHOT**.
                     **FOREGROUND:** The Captain (subject) is seen from the chest up in the immediate foreground, looking out towards the adventure with a confident smirk. They are wearing a grand Captain's Coat draped over their shoulders like a cape.
-                    **BACKGROUND:** Below and behind the captain, the FULL PIRATE SHIP is visible sailing on the blue Grand Line ocean. The ship is stylized and curvy (like the Thousand Sunny), painted in bright colors, with a massive "${animeCustoms.shipDesc}" figurehead clearly visible at the front.
-                    **DETAILS:** News Coo seagulls flying below, white waves crashing against the hull.`;
-                } else if (prompt.id === 'Acción Haki') {
-                    sceneDescription = `Epic battle shot. The subject is using **Armament Haki** (arms coated in shiny black metal) and **Conqueror's Haki** (red/black lightning streaks). Intense, furious expression with white eyes. Clothing is torn battle-damaged pirate gear. Background: Floating rocks and purple aura effects (Onigashima style).`;
-                } else if (prompt.id === 'Cozy Vibes') {
-                    sceneDescription = `A festive pirate banquet scene. The subject is eating greedily with cheeks stuffed. **FOOD:** Huge chunks of Manga Meat on bones and a massive bowl of ramen. Exaggerated food proportions. Subject wears a Wano-style kimono or pirate vest. Vibrant, warm colors, steam rising from food.`;
-                } else if (prompt.id === 'Scene Replication') {
-                    sceneDescription = `Recreate the composition but transport the subject to the One Piece world. **CHANGE OUTFIT:** Dress the subject in cool pirate gear or marine uniform. Do not keep the original modern clothes. Use the signature Eiichiro Oda art style with bold lines.`;
+                    **BACKGROUND:** Below and behind the captain, the FULL PIRATE SHIP is visible sailing on the blue Grand Line ocean. The ship is stylized and curvy (like the Thousand Sunny), painted in bright colors, with a massive "${animeCustoms.shipDesc}" figurehead clearly visible at the front.`;
                 }
             }
 
-            taskInstruction = `**TASK:** Anime Transformation. ${animeStyleInstruction} **SCENE:** ${sceneDescription}. Maintain the subject's key facial features (eyes, nose shape) but stylized.`;
+            taskInstruction = `**TASK:** Anime Transformation. ${animeStyleInstruction} **SCENE:** ${sceneDescription}. ${p_light}. ${p_frame}. ${p_effect}. Maintain the subject's key facial features (eyes, nose shape) but stylized.`;
             break;
 
         case 'figurine':
-            taskInstruction = `**TASK:** Macro Photography of Miniature Figurine. **MATERIAL:** ${styleParams.material}. **SCENE:** ${prompt.base}. Create a tilt-shift effect with shallow depth of field. The subject looks like a collectible toy.`;
+            taskInstruction = `**TASK:** Macro Photography of Miniature Figurine. **STYLE:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_mat}. ${p_env}. Create a tilt-shift effect with shallow depth of field. The subject looks like a collectible toy.`;
             break;
 
         case 'timeTravel':
-            taskInstruction = `**TASK:** Historical Reenactment. **ERA/THEME:** ${styleParams.era}. **SCENE:** ${prompt.base}. Apply period-accurate film grain, camera imperfections, and vintage color grading. ${wardrobe} must match the era perfectly. Subject MUST wear period-accurate clothing. NO modern clothes.`;
+            taskInstruction = `**TASK:** Historical Reenactment. **ERA:** ${activeStyle}. **SCENE:** ${prompt.base}. ${p_film}. ${p_frame}. Subject MUST wear period-accurate clothing. NO modern clothes.`;
             break;
 
         case 'travelPhotoshoot':
-            taskInstruction = `**TASK:** Travel Photography. **DESTINATION:** ${styleParams.destination}. **LANDMARK/SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${wardrobe}. ${p_time}. Integrate subject lighting perfectly with the environment. Ensure the landmark is iconic and recognizable in the background.`;
+            // Lógica de Vestuario Local
+            let travelWardrobe = p_wardrobe;
+            if (travelOptions?.useLocalWardrobe && DESTINATIONS_DATA[styleParams.destination]) {
+                travelWardrobe = `WARDROBE: ${DESTINATIONS_DATA[styleParams.destination].localWardrobe}`;
+            }
+            taskInstruction = `**TASK:** Travel Photography. **DESTINATION:** ${styleParams.destination}. **LANDMARK/SCENE:** ${prompt.base}. ${p_light}. ${p_frame}. ${travelWardrobe}. Integrate subject lighting perfectly with the environment. Ensure the landmark is iconic and recognizable in the background.`;
             break;
 
         case 'customGen':
-            taskInstruction = `**TASK:** Custom Vision. **PROMPT:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${wardrobe}. ${p_pose}. ${p_expr}. ${p_time}. ${p_color}.`;
+            taskInstruction = `**TASK:** Custom Vision. **PROMPT:** ${prompt.base}. ${p_light}. ${p_frame}. ${p_film}. ${p_wardrobe}.`;
             break;
 
         default:
             taskInstruction = `**SCENE:** ${prompt.base}.`;
     }
+
     return `${systemContext} ${taskInstruction} **INPUT:** Use input image for facial biometrics only.`;
 };
