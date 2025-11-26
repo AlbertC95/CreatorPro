@@ -1,40 +1,116 @@
+/**
+ * ControlPanel Component - Premium Design
+ */
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TEMPLATES, DESTINATIONS_DATA } from '../services/prompts';
-import { Settings2, MapPin, Sparkles, Wand2, BrainCircuit, User, Zap, Box, Clock, Sliders } from 'lucide-react';
-
-const Dropdown = ({ label, value, options, onChange, icon: Icon }) => (
-    <div className="group">
-        <label className="text-[10px] font-bold text-gray-500 uppercase mb-1.5 flex items-center gap-1.5 group-hover:text-gray-300 transition-colors">
-            {Icon && <Icon size={10} />} {label}
-        </label>
-        <div className="relative">
-            <select
-                className="w-full bg-black/50 border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none appearance-none transition-all hover:border-gray-600 cursor-pointer"
-                value={value || 'Default'}
-                onChange={e => onChange(e.target.value)}
-            >
-                {options.map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </div>
-        </div>
-    </div>
-);
+import { 
+    Settings2, MapPin, Sparkles, Wand2, BrainCircuit, 
+    Sliders, Anchor, Loader2, Zap
+} from 'lucide-react';
+import { TEMPLATES, DESTINATIONS_DATA, getStyleSpecificOptions } from '../services/prompts';
 
 const OPTION_LABELS = {
-    lighting: 'Iluminación',
-    framing: 'Encuadre / Cámara',
-    wardrobe: 'Vestuario',
-    film: 'Tipo de Película',
-    effect: 'Efectos Especiales',
-    material: 'Material',
-    environment: 'Entorno',
-    pose: 'Pose / Postura',
-    expression: 'Expresión Facial',
-    background: 'Fondo / Escenario'
+    // Studio Pro - Retrato Ejecutivo
+    purpose: '🎯 Propósito',
+    expression: '😊 Expresión',
+    framing: '📐 Encuadre',
+    
+    // Studio Pro - General
+    lighting: '💡 Iluminación',
+    wardrobe: '👔 Vestuario',
+    backdrop: '🎨 Fondo',
+    background: '🎨 Fondo',
+    contrast: '⚡ Contraste',
+    style: '🎨 Estilo',
+    
+    // Studio Pro - Old Money
+    location: '📍 Ubicación',
+    season: '🍂 Temporada',
+    activity: '🎭 Actividad',
+    
+    // Studio Pro - Urbano
+    urbanStyle: '🏙️ Estilo Urbano',
+    mood: '🎭 Mood',
+    
+    // Studio Pro - Business
+    industry: '🏢 Industria',
+    setting: '🏛️ Escenario',
+    level: '📊 Nivel',
+    
+    // Studio Pro - Cyberpunk
+    neonColor: '💜 Color Neón',
+    techLevel: '🤖 Nivel Tech',
+    
+    // Studio Pro - Vintage 90s
+    era: '📅 Era',
+    vibe: '🎸 Vibe',
+    
+    // Studio Pro - Cinematográfico Noir
+    colorTreatment: '🎬 Tratamiento Color',
+    shadowStyle: '🌑 Estilo Sombras',
+    atmosphere: '🌫️ Atmósfera',
+    
+    // Studio Pro - Surrealista
+    dreamscape: '☁️ Dreamscape',
+    colorPalette: '🎨 Paleta',
+    effect: '✨ Efecto',
+    
+    // Studio Pro - Bohemio
+    nature: '🌿 Naturaleza',
+    
+    // Studio Pro - Editorial
+    fashionStyle: '👗 Estilo Fashion',
+    
+    // Anime
+    scene: '🎬 Escena',
+    animeExpression: '😤 Expresión Anime',
+    effectLevel: '✨ Nivel Efectos',
+    
+    // Avatar
+    material: '🎨 Material',
+    renderQuality: '🖥️ Calidad Render',
+    background3D: '🌐 Fondo 3D',
+    
+    // Figurine
+    display: '🏪 Display',
+    angle: '📷 Ángulo',
+    scale: '📏 Escala',
+    finish: '✨ Acabado',
+    
+    // Time Travel
+    photoType: '📸 Tipo de Foto',
+    photoTreatment: '🎞️ Tratamiento',
+    wardrobeAccuracy: '👗 Precisión Vestuario',
+    
+    // Travel
+    timeOfDay: '🌅 Momento del Día',
+    composition: '🖼️ Composición',
+    weather: '🌤️ Clima',
+    travelStyle: '🎒 Estilo Viaje',
+    
+    // Custom
+    color: 'Color',
+    environment: 'Entorno'
 };
+
+const PremiumSelect = ({ label, value, options, onChange, icon: Icon }) => (
+    <div className="space-y-2">
+        <label className="flex items-center gap-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
+            {Icon && <Icon size={12} className="text-amber-500" />}
+            {label}
+        </label>
+        <select
+            value={value || 'Default'}
+            onChange={(e) => onChange(e.target.value)}
+            className="select-premium w-full"
+        >
+            {options.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+            ))}
+        </select>
+    </div>
+);
 
 export const ControlPanel = ({
     selectedTemplate,
@@ -44,35 +120,68 @@ export const ControlPanel = ({
     travelOptions, setTravelOptions,
     selectedLandmarks, setSelectedLandmarks,
     freePrompt, setFreePrompt,
-    handleVisualMuse, handleEnhanceFreePrompt, isEnhancing, handleGenerate, isGenerating, uploadedImage, error
+    handleVisualMuse, handleEnhanceFreePrompt, isEnhancing, 
+    handleGenerate, isGenerating, uploadedImage, error
 }) => {
-
     const currentTemplate = TEMPLATES[selectedTemplate];
 
     const toggleLandmark = (landmark) => {
-        setSelectedLandmarks(prev => {
-            if (prev.includes(landmark)) return prev.filter(l => l !== landmark);
-            return [...prev, landmark];
-        });
+        setSelectedLandmarks(prev => 
+            prev.includes(landmark) 
+                ? prev.filter(l => l !== landmark) 
+                : [...prev, landmark]
+        );
     };
 
-    // Helper para actualizar customParams
     const updateCustomParam = (key, value) => {
         setCustomParams(prev => ({ ...prev, [key]: value }));
     };
 
+    const getStyleValue = () => {
+        switch (selectedTemplate) {
+            case 'professionalPhotoshoot': return styleParams.style;
+            case 'avatarStudio': return styleParams.avatarStyle;
+            case 'anime': return styleParams.animeStyle;
+            case 'figurine': return styleParams.material;
+            case 'timeTravel': return styleParams.era;
+            default: return '';
+        }
+    };
+
+    const setStyleValue = (value) => {
+        const updates = {
+            professionalPhotoshoot: { style: value },
+            avatarStudio: { avatarStyle: value },
+            anime: { animeStyle: value },
+            figurine: { material: value },
+            timeTravel: { era: value },
+        };
+        if (updates[selectedTemplate]) {
+            setStyleParams({ ...styleParams, ...updates[selectedTemplate] });
+        }
+    };
+
     return (
-        <section className="space-y-4 bg-gray-900/60 backdrop-blur-sm p-5 rounded-2xl border border-gray-800 shadow-xl">
-            <div className="flex items-center justify-between border-b border-gray-800 pb-3 mb-3">
-                <h3 className="text-xs font-bold text-yellow-500 uppercase tracking-wider flex items-center gap-2">
-                    <Settings2 size={14} /> Configuración Pro
-                </h3>
-                <span className="text-[10px] text-gray-500 font-mono">GEMINI-3-PRO</span>
+        <div className="card-premium p-5 sm:p-6">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                        <Settings2 size={20} className="text-black" />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+                            Configuración
+                        </h3>
+                        <p className="text-xs text-neutral-500">Ajusta los parámetros</p>
+                    </div>
+                </div>
+                <span className="px-3 py-1 rounded-full bg-white/5 text-[10px] font-mono text-amber-400 border border-amber-500/20">
+                    GEMINI 3
+                </span>
             </div>
 
             <div className="space-y-5">
-                {/* --- CONTROLES ESPECÍFICOS POR PLANTILLA (ESTILO PRINCIPAL) --- */}
-                <AnimatePresence mode='wait'>
+                <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedTemplate}
                         initial={{ opacity: 0, y: 10 }}
@@ -80,146 +189,261 @@ export const ControlPanel = ({
                         exit={{ opacity: 0, y: -10 }}
                         className="space-y-4"
                     >
-                        {/* 1. SELECTOR DE ESTILO PRINCIPAL (Si la plantilla tiene styles) */}
                         {currentTemplate.styles && (
-                            <Dropdown
+                            <PremiumSelect
                                 label="Estilo Visual"
-                                value={styleParams.style || styleParams.avatarStyle || styleParams.animeStyle || styleParams.material || styleParams.era} // Fallback logic
+                                value={getStyleValue()}
                                 options={currentTemplate.styles}
-                                onChange={v => {
-                                    // Actualizar el param correcto según la plantilla (manteniendo compatibilidad con App.jsx)
-                                    if (selectedTemplate === 'professionalPhotoshoot') setStyleParams({ ...styleParams, style: v });
-                                    else if (selectedTemplate === 'avatarStudio') setStyleParams({ ...styleParams, avatarStyle: v });
-                                    else if (selectedTemplate === 'anime') setStyleParams({ ...styleParams, animeStyle: v });
-                                    else if (selectedTemplate === 'figurine') setStyleParams({ ...styleParams, material: v });
-                                    else if (selectedTemplate === 'timeTravel') setStyleParams({ ...styleParams, era: v });
-                                }}
+                                onChange={setStyleValue}
                                 icon={Sparkles}
                             />
                         )}
 
-                        {/* 2. LOGICA ESPECIFICA DE TRAVEL (DESTINOS) */}
                         {selectedTemplate === 'travelPhotoshoot' && (
                             <div className="space-y-4">
-                                <Dropdown
-                                    label="Destino Internacional"
+                                <PremiumSelect
+                                    label="Destino"
                                     value={styleParams.destination}
                                     options={TEMPLATES.travelPhotoshoot.destinations}
-                                    onChange={v => {
+                                    onChange={(v) => {
                                         setStyleParams({ ...styleParams, destination: v });
                                         setSelectedLandmarks([]);
                                     }}
                                     icon={MapPin}
                                 />
-
-                                <div className="bg-black/40 p-3 rounded-xl border border-gray-700/50">
-                                    <label className="text-[10px] font-bold text-gray-400 uppercase mb-2 block">Lugares Icónicos (Auto o Selección)</label>
+                                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                                    <label className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-3 block">
+                                        Lugares Icónicos
+                                    </label>
                                     <div className="grid grid-cols-2 gap-2">
                                         {DESTINATIONS_DATA[styleParams.destination]?.landmarks.map(landmark => (
                                             <button
                                                 key={landmark}
                                                 onClick={() => toggleLandmark(landmark)}
-                                                className={`text-[10px] px-2 py-2 rounded-lg border transition-all text-left truncate ${selectedLandmarks.includes(landmark) ? 'bg-yellow-500/20 border-yellow-500 text-yellow-200 font-medium' : 'border-gray-700 text-gray-400 hover:border-gray-500 hover:bg-gray-800'}`}
+                                                className={`text-[11px] px-3 py-2 rounded-xl border text-left truncate transition-all ${
+                                                    selectedLandmarks.includes(landmark) 
+                                                        ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300' 
+                                                        : 'border-white/10 text-neutral-400 hover:border-white/20'
+                                                }`}
                                             >
                                                 {selectedLandmarks.includes(landmark) ? '✓ ' : ''}{landmark}
                                             </button>
                                         ))}
                                     </div>
                                 </div>
-
-                                <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl bg-gray-800/50 hover:bg-gray-800 transition-colors border border-gray-700/50">
-                                    <div className={`w-5 h-5 rounded flex items-center justify-center border ${travelOptions.useLocalWardrobe ? 'bg-yellow-500 border-yellow-500' : 'border-gray-600'}`}>
-                                        {travelOptions.useLocalWardrobe && <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                                <label className="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 cursor-pointer hover:bg-white/[0.04]">
+                                    <div className={`w-12 h-7 rounded-full p-1 transition-colors ${travelOptions.useLocalWardrobe ? 'bg-emerald-500' : 'bg-white/10'}`}>
+                                        <motion.div animate={{ x: travelOptions.useLocalWardrobe ? 20 : 0 }} className="w-5 h-5 rounded-full bg-white shadow-lg" />
                                     </div>
-                                    <input
-                                        type="checkbox"
-                                        checked={travelOptions.useLocalWardrobe}
-                                        onChange={() => setTravelOptions({ ...travelOptions, useLocalWardrobe: !travelOptions.useLocalWardrobe })}
-                                        className="hidden"
-                                    />
+                                    <input type="checkbox" checked={travelOptions.useLocalWardrobe} onChange={() => setTravelOptions({ ...travelOptions, useLocalWardrobe: !travelOptions.useLocalWardrobe })} className="hidden" />
                                     <div>
-                                        <span className="text-xs font-bold text-gray-200 block">Moda Local Auténtica</span>
-                                        <span className="text-[10px] text-gray-500 block">Adapta la ropa al destino (ej: Kimono en Tokio)</span>
+                                        <span className="text-sm font-semibold text-white block">Moda Local</span>
+                                        <span className="text-xs text-neutral-500">Kimono en Tokio, etc.</span>
                                     </div>
                                 </label>
                             </div>
                         )}
 
-                        {/* 3. LOGICA ESPECIFICA DE ANIME (ONE PIECE) */}
                         {selectedTemplate === 'anime' && styleParams.animeStyle === 'One Piece Style' && (
-                            <div className="p-4 bg-blue-900/10 border border-blue-500/30 rounded-xl space-y-3 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-2 opacity-10"><span className="text-4xl">🏴‍☠️</span></div>
-                                <h4 className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">Opciones Pirata</h4>
-                                <div className="space-y-2">
-                                    <input type="text" value={animeCustoms.pirateName} onChange={e => setAnimeCustoms({ ...animeCustoms, pirateName: e.target.value })} className="w-full bg-black/50 border border-blue-500/30 rounded-lg p-2 text-xs text-white placeholder-blue-500/50 focus:border-blue-400 outline-none" placeholder="NOMBRE PIRATA (Ej: LUFFY)" />
-                                    <input type="text" value={animeCustoms.bounty} onChange={e => setAnimeCustoms({ ...animeCustoms, bounty: e.target.value })} className="w-full bg-black/50 border border-blue-500/30 rounded-lg p-2 text-xs text-white placeholder-blue-500/50 focus:border-blue-400 outline-none" placeholder="RECOMPENSA (Ej: 3,000,000)" />
-                                    <input type="text" value={animeCustoms.shipDesc} onChange={e => setAnimeCustoms({ ...animeCustoms, shipDesc: e.target.value })} className="w-full bg-black/50 border border-blue-500/30 rounded-lg p-2 text-xs text-white placeholder-blue-500/50 focus:border-blue-400 outline-none" placeholder="DETALLE BARCO (Ej: Cabeza de Dragón)" />
+                            <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500/10 to-red-500/10 border border-blue-500/20 space-y-4">
+                                <div className="flex items-center gap-2 pb-3 border-b border-white/10">
+                                    <Anchor size={16} className="text-blue-400" />
+                                    <span className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-red-400 uppercase">
+                                        ⚓ Personalización Pirata
+                                    </span>
                                 </div>
+                                
+                                {/* Cartel de Se Busca */}
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">📜 Cartel de Se Busca</label>
+                                    <input 
+                                        type="text" 
+                                        value={animeCustoms.pirateName || ''} 
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, pirateName: e.target.value })} 
+                                        placeholder="Nombre pirata (ej: MONKEY D. LUFFY)" 
+                                        className="input-premium w-full text-sm" 
+                                    />
+                                    <input 
+                                        type="text" 
+                                        value={animeCustoms.bounty || ''} 
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, bounty: e.target.value })} 
+                                        placeholder="Recompensa (ej: 3,000,000,000)" 
+                                        className="input-premium w-full text-sm" 
+                                    />
+                                    <input 
+                                        type="text" 
+                                        value={animeCustoms.epithet || ''} 
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, epithet: e.target.value })} 
+                                        placeholder="Epíteto (ej: Sombrero de Paja)" 
+                                        className="input-premium w-full text-sm" 
+                                    />
+                                </div>
+
+                                {/* Barco Pirata */}
+                                <div className="space-y-2 pt-3 border-t border-white/10">
+                                    <label className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">🚢 Tu Barco Pirata</label>
+                                    <input 
+                                        type="text" 
+                                        value={animeCustoms.shipName || ''} 
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, shipName: e.target.value })} 
+                                        placeholder="Nombre del barco (ej: Thousand Sunny)" 
+                                        className="input-premium w-full text-sm" 
+                                    />
+                                    <select
+                                        value={animeCustoms.figurehead || 'leon'}
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, figurehead: e.target.value })}
+                                        className="select-premium w-full text-sm"
+                                    >
+                                        <option value="">-- Mascarón de Proa --</option>
+                                        <option value="leon">🦁 León (como Sunny)</option>
+                                        <option value="oveja">🐑 Oveja/Carnero (como Merry)</option>
+                                        <option value="dragon">🐉 Dragón</option>
+                                        <option value="calavera">💀 Calavera</option>
+                                        <option value="serpiente">🐍 Serpiente Marina</option>
+                                        <option value="aguila">🦅 Águila</option>
+                                        <option value="lobo">🐺 Lobo</option>
+                                        <option value="tiburon">🦈 Tiburón</option>
+                                        <option value="fenix">🔥 Fénix</option>
+                                        <option value="custom">✨ Personalizado...</option>
+                                    </select>
+                                    {animeCustoms.figurehead === 'custom' && (
+                                        <input 
+                                            type="text" 
+                                            value={animeCustoms.customFigurehead || ''} 
+                                            onChange={(e) => setAnimeCustoms({ ...animeCustoms, customFigurehead: e.target.value })} 
+                                            placeholder="Describe tu mascarón personalizado" 
+                                            className="input-premium w-full text-sm" 
+                                        />
+                                    )}
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label className="text-[9px] text-neutral-500 block mb-1">Color Principal</label>
+                                            <select
+                                                value={animeCustoms.shipColor || 'marron'}
+                                                onChange={(e) => setAnimeCustoms({ ...animeCustoms, shipColor: e.target.value })}
+                                                className="select-premium w-full text-xs"
+                                            >
+                                                <option value="marron">🟤 Madera Natural</option>
+                                                <option value="negro">⚫ Negro</option>
+                                                <option value="rojo">🔴 Rojo</option>
+                                                <option value="azul">🔵 Azul</option>
+                                                <option value="dorado">🟡 Dorado</option>
+                                                <option value="blanco">⚪ Blanco</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-[9px] text-neutral-500 block mb-1">Color Velas</label>
+                                            <select
+                                                value={animeCustoms.sailColor || 'blanco'}
+                                                onChange={(e) => setAnimeCustoms({ ...animeCustoms, sailColor: e.target.value })}
+                                                className="select-premium w-full text-xs"
+                                            >
+                                                <option value="blanco">⚪ Blanco</option>
+                                                <option value="negro">⚫ Negro</option>
+                                                <option value="rojo">🔴 Rojo</option>
+                                                <option value="azul">🔵 Azul</option>
+                                                <option value="rayas">🏴‍☠️ Rayas</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Jolly Roger */}
+                                <div className="space-y-2 pt-3 border-t border-white/10">
+                                    <label className="text-[10px] font-bold text-red-400 uppercase tracking-wider">🏴‍☠️ Jolly Roger (Bandera)</label>
+                                    <input 
+                                        type="text" 
+                                        value={animeCustoms.jollyRoger || ''} 
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, jollyRoger: e.target.value })} 
+                                        placeholder="Describe tu Jolly Roger (ej: calavera con sombrero de paja)" 
+                                        className="input-premium w-full text-sm" 
+                                    />
+                                    <select
+                                        value={animeCustoms.flagStyle || 'clasico'}
+                                        onChange={(e) => setAnimeCustoms({ ...animeCustoms, flagStyle: e.target.value })}
+                                        className="select-premium w-full text-sm"
+                                    >
+                                        <option value="clasico">💀 Clásico (Calavera + Huesos)</option>
+                                        <option value="sombrero">🎩 Con Sombrero</option>
+                                        <option value="espadas">⚔️ Con Espadas Cruzadas</option>
+                                        <option value="fuego">🔥 Con Llamas</option>
+                                        <option value="corazon">❤️ Con Corazón</option>
+                                        <option value="custom">✨ Totalmente Personalizado</option>
+                                    </select>
+                                </div>
+
+                                <p className="text-[9px] text-neutral-500 text-center pt-2 border-t border-white/5">
+                                    💡 Deja campos vacíos para valores por defecto estilo One Piece
+                                </p>
                             </div>
                         )}
 
-                        {/* 4. CUSTOM GEN INPUT */}
                         {selectedTemplate === 'customGen' && (
-                            <div className="space-y-2">
-                                <div className="flex justify-between items-end">
-                                    <label className="text-[10px] font-bold text-gray-500 uppercase">Tu Visión</label>
-                                    <div className="flex gap-1">
-                                        <button onClick={handleVisualMuse} disabled={isEnhancing} className="p-1.5 bg-gray-800 hover:bg-purple-500 hover:text-white rounded-md text-gray-400 transition-colors border border-gray-700" title="Inspirarme en mi foto"><BrainCircuit size={12} /></button>
-                                        <button onClick={handleEnhanceFreePrompt} disabled={isEnhancing || !freePrompt} className="p-1.5 bg-gray-800 hover:bg-yellow-500 hover:text-black rounded-md text-gray-400 transition-colors border border-gray-700" title="Mejorar con IA"><Wand2 size={12} /></button>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">Tu Visión</label>
+                                    <div className="flex gap-2">
+                                        <button onClick={handleVisualMuse} disabled={isEnhancing || !uploadedImage} className="p-2 rounded-lg bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 disabled:opacity-50"><BrainCircuit size={14} /></button>
+                                        <button onClick={handleEnhanceFreePrompt} disabled={isEnhancing || !freePrompt} className="p-2 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 disabled:opacity-50"><Wand2 size={14} /></button>
                                     </div>
                                 </div>
-                                <textarea
-                                    value={freePrompt}
-                                    onChange={e => setFreePrompt(e.target.value)}
-                                    placeholder="Describe tu idea... (Ej: Un astronauta samurai en Marte)"
-                                    className="w-full bg-black/50 border border-gray-700 rounded-xl p-3 text-sm h-24 resize-none focus:border-yellow-500 outline-none transition-colors placeholder:text-gray-700"
-                                />
+                                <textarea value={freePrompt} onChange={(e) => setFreePrompt(e.target.value)} placeholder="Describe tu idea..." className="input-premium w-full h-28 resize-none" />
                             </div>
                         )}
                     </motion.div>
                 </AnimatePresence>
 
-                {/* --- CONTROLES DINÁMICOS (AJUSTES FINOS) --- */}
-                {/* Renderiza solo las opciones disponibles para la plantilla actual */}
-                {currentTemplate.options && (
-                    <div className="pt-4 border-t border-gray-800">
-                        <h4 className="text-[10px] font-bold text-gray-600 uppercase mb-3 flex items-center gap-2">
-                            <Sliders size={12} /> Ajustes Finos
-                        </h4>
-                        <div className="grid grid-cols-2 gap-3">
-                            {Object.entries(currentTemplate.options).map(([key, optionsList]) => (
-                                <Dropdown
-                                    key={key}
-                                    label={OPTION_LABELS[key] || key}
-                                    value={customParams[key]}
-                                    options={optionsList}
-                                    onChange={v => updateCustomParam(key, v)}
-                                />
-                            ))}
+                {(() => {
+                    // Obtener opciones dinámicas según el estilo seleccionado
+                    let dynamicOptions = currentTemplate.options || {};
+                    
+                    if (selectedTemplate === 'professionalPhotoshoot') {
+                        dynamicOptions = getStyleSpecificOptions('professionalPhotoshoot', styleParams.style);
+                    }
+                    
+                    return Object.keys(dynamicOptions).length > 0 && (
+                        <div className="pt-5 border-t border-white/5">
+                            <div className="flex items-center gap-2 mb-4">
+                                <Sliders size={14} className="text-neutral-500" />
+                                <span className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">
+                                    Ajustes Finos - {styleParams.style || 'Estilo'}
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                {Object.entries(dynamicOptions).map(([key, optionsList]) => (
+                                    <PremiumSelect 
+                                        key={`${styleParams.style}-${key}`} 
+                                        label={OPTION_LABELS[key] || key} 
+                                        value={customParams[key]} 
+                                        options={optionsList} 
+                                        onChange={(v) => updateCustomParam(key, v)} 
+                                    />
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    );
+                })()}
 
-                {/* --- BOTÓN GENERAR --- */}
-                <button
+                <motion.button
+                    whileHover={{ scale: uploadedImage && !isGenerating ? 1.02 : 1 }}
+                    whileTap={{ scale: uploadedImage && !isGenerating ? 0.98 : 1 }}
                     onClick={handleGenerate}
                     disabled={!uploadedImage || isGenerating}
-                    className="w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-black font-bold rounded-xl shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98]"
+                    className={`w-full py-4 px-6 rounded-2xl font-bold text-base flex items-center justify-center gap-3 transition-all ${
+                        !uploadedImage || isGenerating ? 'bg-white/5 text-neutral-500 cursor-not-allowed' : 'btn-glow text-black shadow-xl shadow-orange-500/30'
+                    }`}
                 >
                     {isGenerating ? (
-                        <>
-                            <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                            Generando Magia...
-                        </>
+                        <><Loader2 size={20} className="animate-spin" /><span className="relative z-10">Generando...</span></>
                     ) : (
-                        <>
-                            <Sparkles size={18} className="fill-black/20" />
-                            GENERAR SET (x6)
-                        </>
+                        <><Zap size={20} className="relative z-10" /><span className="relative z-10">GENERAR SET (x6)</span></>
                     )}
-                </button>
-                {error && <div className="text-red-400 text-xs text-center bg-red-500/10 border border-red-500/20 p-2 rounded-lg">{error}</div>}
+                </motion.button>
+
+                {error && (
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">{error}</div>
+                )}
             </div>
-        </section>
+        </div>
     );
 };

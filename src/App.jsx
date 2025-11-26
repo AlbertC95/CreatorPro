@@ -10,31 +10,27 @@ import { useHistory } from './hooks/useHistory';
 import { TEMPLATES } from './services/prompts';
 
 function App() {
-  // Estado Global
-  const [apiKey, setApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || ''); // Load from .env
+  const [apiKey, setApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || '');
   const [showSettings, setShowSettings] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState('professionalPhotoshoot');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
-  // Estados de Parámetros
   const [styleParams, setStyleParams] = useState({
-    style: 'Estudio Minimalista',
+    style: 'Retrato Ejecutivo',
     destination: 'París, Francia',
     avatarStyle: 'CGI Hiperrealista',
     animeStyle: 'Studio Ghibli',
     material: 'Plástico Vinilo',
-    era: '1980s Mall'
+    era: '1980s Mall Portrait'
   });
 
-  // Sincronizar styleParams cuando cambia la plantilla
   useEffect(() => {
     const template = TEMPLATES[selectedTemplate];
     if (!template) return;
 
     const newStyleParams = { ...styleParams };
 
-    // Resetear el valor correcto según la plantilla
     if (selectedTemplate === 'professionalPhotoshoot' && template.styles) {
       newStyleParams.style = template.styles[0];
     } else if (selectedTemplate === 'avatarStudio' && template.styles) {
@@ -50,38 +46,45 @@ function App() {
     }
 
     setStyleParams(newStyleParams);
-
-    // Resetear customParams para evitar valores incompatibles entre plantillas
     setCustomParams({});
   }, [selectedTemplate]);
+
   const [customParams, setCustomParams] = useState({
     lighting: 'Default', framing: 'Default', film: 'Default',
     wardrobe: 'Default', pose: 'Default', expression: 'Default',
     time: 'Default', color: 'Default'
   });
+
   const [animeCustoms, setAnimeCustoms] = useState({
-    pirateName: 'CAPTAIN',
-    bounty: '3,000,000,000',
-    shipDesc: 'Dragon Head Figurehead'
+    // Cartel de Se Busca
+    pirateName: '',
+    bounty: '',
+    epithet: '',
+    // Barco Pirata
+    shipName: '',
+    figurehead: 'leon',
+    customFigurehead: '',
+    shipColor: 'marron',
+    sailColor: 'blanco',
+    // Jolly Roger
+    jollyRoger: '',
+    flagStyle: 'clasico'
   });
+
   const [travelOptions, setTravelOptions] = useState({ useLocalWardrobe: false });
   const [selectedLandmarks, setSelectedLandmarks] = useState([]);
   const [freePrompt, setFreePrompt] = useState('');
 
-  // Hook de Lógica Gemini
   const {
     isGenerating, isEnhancing, error, generatedImages,
     generateSet, enhancePrompt, getVisualMuse
   } = useGemini(apiKey);
 
-  // Hook de Historial
   const { addToHistory } = useHistory();
 
-  // Guardar imágenes en historial cuando se generan
-  React.useEffect(() => {
+  useEffect(() => {
     if (generatedImages.length > 0) {
       generatedImages.forEach(img => {
-        // Solo agregar si tiene timestamp reciente (últimos 5 segundos)
         if (img.timestamp && Date.now() - img.timestamp < 5000) {
           addToHistory(img);
         }
@@ -89,7 +92,6 @@ function App() {
     }
   }, [generatedImages, addToHistory]);
 
-  // Handlers
   const handleGenerate = () => {
     generateSet(uploadedImage, selectedTemplate, { styleParams, customParams, animeCustoms, travelOptions }, freePrompt, selectedLandmarks);
   };
@@ -104,10 +106,7 @@ function App() {
     if (!freePrompt) return;
     const variations = await enhancePrompt(freePrompt);
     if (variations && variations.length > 0) {
-      setFreePrompt(variations[0] + " (+ variaciones ocultas...)");
-      // Nota: En una impl real, pasaríamos las variaciones al hook, 
-      // pero por ahora el hook maneja la lógica de "customGen" simple o compleja.
-      // Para simplificar, dejamos que el hook use el freePrompt tal cual o lo mejoremos allí.
+      setFreePrompt(variations[0]);
     }
   };
 
@@ -129,9 +128,9 @@ function App() {
         setShowSettings={setShowSettings}
         onHistoryClick={() => setIsHistoryOpen(true)}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* LEFT PANEL: CONTROLS */}
-          <div className="lg:col-span-4 space-y-8 max-h-[calc(100vh-6rem)] overflow-y-auto pr-4 pl-1 custom-scrollbar">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+          {/* Left Panel */}
+          <div className="lg:col-span-4 space-y-6 lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto lg:pr-2 custom-scrollbar">
             <ImageUploader
               uploadedImage={uploadedImage}
               setUploadedImage={setUploadedImage}
@@ -161,7 +160,7 @@ function App() {
             />
           </div>
 
-          {/* RIGHT PANEL: RESULTS */}
+          {/* Right Panel */}
           <div className="lg:col-span-8">
             <ResultGrid
               generatedImages={generatedImages}
@@ -172,7 +171,6 @@ function App() {
         </div>
       </Layout>
 
-      {/* HISTORY PANEL */}
       <HistoryPanel
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
